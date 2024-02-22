@@ -3,22 +3,19 @@ package cycling;
 public class Teams {
     private int teamID;
     private String teamName;
+    private static int nextID = 1;
 
-    public Teams(int teamID, String teamName) {
-        this.teamID = teamID;
+    public Teams(String teamName) {
+        this.teamID = nextID++;
         this.teamName = teamName;
     }
 
-    public void createTeam(String teamName) {
+    public static void removeTeam(int teamID) {
 
     }
 
-    public void removeTeam(int teamID) {
-
-    }
-
-    public void getTeam() {
-
+    public int getTeam() {
+        return teamID;
     }
 
     public void teamRiders() {
