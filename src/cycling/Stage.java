@@ -2,7 +2,7 @@ package cycling;
 
 import java.time.LocalTime;
 
-public class Stages {
+public class Stage {
     private int stageID;
     private int raceID;
     private String stageName;
@@ -10,10 +10,11 @@ public class Stages {
     private String stageDescription;
     private double stageLength;
     private LocalTime startTime;
-    private int[] checkpoints; //Unsure on the datatype this lists needs to be
-    private static int nextID = 1;
+    private String status;
+    private Checkpoint[] checkpoints; //Unsure on the datatype this lists needs to be | will be of type checkpoint, assuming that can be done
+    private static int nextID = 0;
 
-    public Stages(int raceID, String stageName, StageType stageType, String stageDescription, double stageLength, LocalTime startTime) {
+    public Stage(int raceID, String stageName, StageType stageType, String stageDescription, double stageLength, LocalTime startTime) {
         this.stageID = nextID++;
         this.raceID = raceID;
         this.stageName = stageName;
@@ -21,10 +22,10 @@ public class Stages {
         this.stageDescription = stageDescription;
         this.stageLength = stageLength;
         this.startTime = startTime;
-        this.checkpoints = new int[0];
+        this.checkpoints = new Checkpoint[0];
     }
     
-    public int getStage() {
+    public int getStageId() {
         return stageID;
     }
     
