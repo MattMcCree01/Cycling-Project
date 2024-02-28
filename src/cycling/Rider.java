@@ -1,15 +1,15 @@
 package cycling;
-
+import java.util.ArrayList;
 import java.time.LocalTime;
 
 public class Rider {
-    private int id = 0;
+    private int id = 0 ;
     private String name;
     private int BirthYear;
     private int RacePoints;
     private int MountainPoints;
     private int teamID;
-    private int[] stageResults;
+    private ArrayList<Integer> stageResults;
     private LocalTime elapsedTime;
 
     public Rider (int teamId, String name, int yearOfBirth) {
@@ -19,7 +19,7 @@ public class Rider {
         this.BirthYear = yearOfBirth;
         this.RacePoints = 0;
         this.MountainPoints = 0;
-        this.stageResults = new int[0];
+        this.stageResults = new ArrayList<Integer>();
         this.elapsedTime = LocalTime.of(0, 0, 0);
     }
     public void removeRider(int riderId) {

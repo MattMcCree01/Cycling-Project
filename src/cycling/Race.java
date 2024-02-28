@@ -1,34 +1,42 @@
 package cycling;
 import java.time.LocalTime;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Race {
+    
     private int raceId = 0;
     private String raceName;
     private String raceDescription;
     private double totalLength;
-    private Stage[] stages;
-    private Rider[] GeneralClassification;
-    private Rider[] pointsClassification;
-    private Rider[] mountainClassification;
+    private ArrayList<Stage> stages;
+    private ArrayList<Rider> GeneralClassification;
+    private ArrayList<Rider> pointsClassification;
+    private ArrayList<Rider> mountainClassification;
 
     public Race(String raceName, String raceDescription){
         this.raceName = raceName;
         this.raceDescription = raceDescription;
         this.raceId = raceId++;
         this.totalLength = 0;
-        this.stages = new Stage[0];
-        this.GeneralClassification = new Rider[0];
-        this.pointsClassification = new Rider[0];
-        this.mountainClassification = new Rider[0];
+        this.stages = new ArrayList<Stage>();
+        this.GeneralClassification = new ArrayList<Rider>();
+        this.pointsClassification = new ArrayList<Rider>();
+        this.mountainClassification = new ArrayList<Rider>();
         
+    }
+    public String viewRaceDetails(){
+        return "Race Name: " + this.raceName + 
+               "\nRace Description: " + this.raceDescription + 
+               "\nNumber of Stages: " + this.getNumberOfStages() + 
+               "\nTotal Length: " + this.totalLength;
     }
     
         
 
     
     public int getNumberOfStages(){
-        return stages.length;
+        return stages.size();
     }
     public String viewRaceDetails(int raceId){
         if(this.raceId == raceId) {
@@ -44,17 +52,21 @@ public class Race {
     public int addStageToRace(int RaceId, String stageName, String description, double length, LocalTime startTime, StageType type){
         
         Stage newStage = new Stage(raceId, stageName, type, description, length, startTime);
-        Stage[] newStages = new Stage[stages.length + 1];
-        for(int i = 0; i < stages.length; i++) {
-            newStages[i] = stages[i];
+        Stage[] newStages = new Stage[stages.size() + 1];
+        for(int i = 0; i < stages.size(); i++) {
+            newStages[i] = stages.get(i);
         }
-        newStages[stages.length] = newStage;
-        stages = newStages;
+        newStages[stages.size()] = newStage;
+        stages = new ArrayList<>(Arrays.asList(newStages)); // Convert array to ArrayList
         return newStage.getStageId();
-    
-    }
-    public getRaceStages(){// need to decide how to return stage Ids
 
+    }
+    public int[] getStageIds() {
+        int[] stageIds = new int[stages.size()];
+        for (int i = 0; i < stages.size(); i++) {
+            stageIds[i] = stages.get(i).getStageId();
+        }
+        return stageIds;
     }
 
 }
