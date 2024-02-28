@@ -11,7 +11,7 @@ public class Stage {
     private double stageLength;
     private LocalTime startTime;
     private String status;
-    private Checkpoint[] checkpoints; //Unsure on the datatype this lists needs to be | will be of type checkpoint, assuming that can be done
+    private Checkpoint[] checkpoints; 
     private static int nextID = 0;
 
     public Stage(int raceID, String stageName, StageType stageType, String stageDescription, double stageLength, LocalTime startTime) {
