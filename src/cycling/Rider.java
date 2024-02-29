@@ -29,10 +29,10 @@ public class Rider {
         
     }
     public LocalTime[] getRiderResultsInStage(int stageId, int riderId) {
-        
+        return null;
     }
-    public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) {
-        
+    public LocalTime[] getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) {
+        return null;
     }
     public void deleteRiderResultsInStage(int stageId, int riderId) {
         

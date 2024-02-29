@@ -46,7 +46,12 @@ public class Stage {
     }
 
     public int[] getStageCheckpoints(int stageID) {
-        return checkpoints;
+        int[] outArray = new int[checkpoints.length];
+        for (int i = 0; i < checkpoints.length; i++) {
+            outArray[i] = checkpoints[i].getCheckpointID();
+        
+        }
+        return outArray;
     }
 
     public void concludeStagePreparation(int stageID) {

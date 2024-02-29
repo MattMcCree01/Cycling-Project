@@ -69,4 +69,14 @@ public class Race {
         return stageIds;
     }
 
+    public Stage loadStage(int StageId){
+        for(int i=0; i< stages.size();i++){
+            if (stages.get(i).getStageId() == StageId){
+                return stages.get(i);
+            }
+
+        }
+        return new Stage(-1, "No Stage", StageType.FLAT, "No Description", 0, LocalTime.of(0, 0, 0));
+    }
+
 }
