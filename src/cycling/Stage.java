@@ -1,5 +1,6 @@
 package cycling;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Stage {
@@ -13,7 +14,7 @@ public class Stage {
     private String status;
     private Checkpoint[] checkpoints; 
 
-    public Stage(int raceID, String stageName, StageType stageType, String stageDescription, double stageLength, LocalTime startTime) {
+    public Stage(int raceID, String stageName, String stageDescription, double stageLength, LocalTime startTime, StageType stageType) {
         this.stageId = stageId++;
         this.raceID = raceID;
         this.stageName = stageName;
@@ -27,6 +28,9 @@ public class Stage {
     
     public int getStageId() {
         return stageId;
+    }
+    public String getStageName() {
+        return stageName;
     }
     
     public static void removeStage(int stageID) {

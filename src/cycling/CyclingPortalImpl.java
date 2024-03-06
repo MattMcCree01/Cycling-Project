@@ -15,27 +15,67 @@ import java.util.ArrayList;
  *
  */
 public class CyclingPortalImpl implements CyclingPortal {
+	private ArrayList<Race> races = new ArrayList<Race>();
+	private ArrayList<Team> teams = new ArrayList<Team>();
 
 	@Override
 	public int[] getRaceIds() {
-		ArrayList<Race> races = new ArrayList<Race>();
-		races = Race.getRaces();
+		int[] raceIds = new int[races.size()];
 		for(int i = 0; i < races.size(); i++) {
-			System.out.println(i);
+			raceIds[i] = races.get(i).getRaceId();
 		}
-		return new int[] {};
+		if(raceIds.length > 0) {
+			return raceIds;
+		}	
+		else {
+			return new int[] {};
+		}
 	}
 
 	@Override
 	public int createRace(String name, String description) throws IllegalNameException, InvalidNameException {
-		// TODO Auto-generated method stub 
-		return 0;
+		if (name == null || name.contains(" ")) {
+			throw new IllegalNameException("Name is null or contains whitespace");
+		} 
+
+		if (name.length() < 1) {
+			throw new InvalidNameException("Name is empty");
+		}
+
+		if (name.length() > 30) {
+			throw new InvalidNameException("Name is too long");
+		}
+		for (Race race : races) {
+			if (race.getRaceName().equals(name)) {
+				throw new InvalidNameException("Name already exists");
+			}
+		}
+		if(races.add(new Race(name, description))){
+			return races.get(races.size() - 1).getRaceId();
+		}
+		else{
+			return -1;
+		}
+		
 	}
+	
 
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub 
-		return null;
+		boolean check = false;
+		String raceDetails = "";
+		for (Race race : races) {
+			if (race.getRaceId() == raceId) {
+				check = true;
+				raceDetails = race.viewRaceDetails();
+				break;
+			}
+		}
+		if (!check) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		return raceDetails;
+		
 	}
 
 	@Override
@@ -45,22 +85,75 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int getNumberOfStages(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return 0;
+		// the ID you're looking for
+		Race foundRace = null;
+
+		for (Race race : races) {
+			if (race.getRaceId() == raceId) {
+				foundRace = race;
+				break;
+			}
+		}
+
+		if (foundRace != null) {
+			return foundRace.getNumberOfStages();
+		} else {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		
 	}
 
 	@Override
 	public int addStageToRace(int raceId, String stageName, String description, double length, LocalDateTime startTime,
 			StageType type)
 			throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
-		// TODO Auto-generated method stub
-		return 0;
+		Race foundRace = null;
+		for (Race race : races) {
+			if (!(race.getRaceId() == (raceId))) {
+				throw new IDNotRecognisedException("Race Id doesn't exist");
+			}
+			else{
+				foundRace = race;
+				}
+		}
+		if (length < 5) {
+			throw new InvalidLengthException("Stage must be more than 5km");
+		}
+		if (stageName == null || stageName.contains(" ")) {
+			throw new IllegalNameException("Name is null or contains whitespace");
+		} 
+
+		if (stageName.length() < 1) {
+			throw new InvalidNameException("Name is empty");
+		}
+
+		if (stageName.length() > 30) {
+			throw new InvalidNameException("Name is too long");
+		}
+		for (Stage stage: foundRace.loadStages()) {
+			if (stage.getStageName().equals(stageName)) {
+				throw new InvalidNameException("Name already exists");
+			}
+		}
+		foundRace.addStageToRace(raceId, stageName, description, length, startTime.toLocalTime(), type);
+		Stage[] stages = foundRace.loadStages();
+		return stages[-1].getStageId();
 	}
 
 	@Override
 	public int[] getRaceStages(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		Race foundRace = null;
+		for (Race race : races) {
+			if (!(race.getRaceId() == (raceId))) {
+				throw new IDNotRecognisedException("Race Id doesn't exist");
+			}
+			else{
+				foundRace = race;
+				}
+		}
+		
+		 
+		return foundRace.getStageIds();
 	}
 
 	@Override

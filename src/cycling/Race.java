@@ -13,7 +13,7 @@ public class Race {
     private ArrayList<Rider> GeneralClassification;
     private ArrayList<Rider> pointsClassification;
     private ArrayList<Rider> mountainClassification;
-    private ArrayList<Race> races = new ArrayList<Race>();
+    private static ArrayList<Race> races = new ArrayList<Race>();
 
     public Race(String raceName, String raceDescription){
         this.raceName = raceName;
@@ -39,20 +39,9 @@ public class Race {
     public int getNumberOfStages(){
         return stages.size();
     }
-    public String viewRaceDetails(int raceId){
-        if(this.raceId == raceId) {
-            return "Race ID: " + this.raceId + "\n" +
-                   "Race Name: " + this.raceName + "\n" +
-                   "Race Description: " + this.raceDescription + "\n" +
-                   "Number of Stages: " + getNumberOfStages() + "\n" +
-                   "Total Length: " + this.totalLength;
-        } else {
-            return "No race found with ID: " + raceId;
-        }
-    }
     public int addStageToRace(int RaceId, String stageName, String description, double length, LocalTime startTime, StageType type){
         
-        Stage newStage = new Stage(raceId, stageName, type, description, length, startTime);
+        Stage newStage = new Stage(raceId, stageName, description, length, startTime, type);
         Stage[] newStages = new Stage[stages.size() + 1];
         for(int i = 0; i < stages.size(); i++) {
             newStages[i] = stages.get(i);
@@ -77,12 +66,23 @@ public class Race {
             }
 
         }
-        return new Stage(-1, "No Stage", StageType.FLAT, "No Description", 0, LocalTime.of(0, 0, 0));
+        return null;
+    }
+    public Stage[] loadStages(){
+        int[] stageIds = getStageIds();
+        Stage[] stages = new Stage[stageIds.length]; // Add semicolon at the end
+        for(int i = 0; i < stageIds.length; i++){ // Add missing variable declaration
+            stages[i] = loadStage(stageIds[i]); // Use stageIds[i] instead of id
+        }
+        return stages;
     }
     public int getRaceId(){
         return this.raceId;
     }
-    public static ArrayList<Race> getRaces(){
-        return races;
+    public String getRaceName(){
+        return this.raceName;
+    }
+    public void addStage(Stage stage){
+        stages.add(stage);
     }
 }
