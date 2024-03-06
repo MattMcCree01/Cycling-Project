@@ -13,6 +13,7 @@ public class Race {
     private ArrayList<Rider> GeneralClassification;
     private ArrayList<Rider> pointsClassification;
     private ArrayList<Rider> mountainClassification;
+    private ArrayList<Race> races = new ArrayList<Race>();
 
     public Race(String raceName, String raceDescription){
         this.raceName = raceName;
@@ -78,5 +79,10 @@ public class Race {
         }
         return new Stage(-1, "No Stage", StageType.FLAT, "No Description", 0, LocalTime.of(0, 0, 0));
     }
-
+    public int getRaceId(){
+        return this.raceId;
+    }
+    public static ArrayList<Race> getRaces(){
+        return races;
+    }
 }

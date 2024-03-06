@@ -9,8 +9,9 @@ public class Rider {
     private int RacePoints;
     private int MountainPoints;
     private int teamID;
-    private ArrayList<Integer> stageResults;
+    private ArrayList<stageResults> stageResults;
     private LocalTime elapsedTime;
+    private ArrayList<Rider> riders = new ArrayList<Rider>();
 
     public Rider (int teamId, String name, int yearOfBirth) {
         this.id = id++;
@@ -19,7 +20,7 @@ public class Rider {
         this.BirthYear = yearOfBirth;
         this.RacePoints = 0;
         this.MountainPoints = 0;
-        this.stageResults = new ArrayList<Integer>();
+        this.stageResults = new ArrayList<stageResults>();
         this.elapsedTime = LocalTime.of(0, 0, 0);
     }
     public void removeRider(int riderId) {

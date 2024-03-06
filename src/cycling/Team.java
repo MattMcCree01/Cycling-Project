@@ -7,7 +7,7 @@ public class Team {
     private String teamName;
     private String description;
     private static int nextID = 0;
-    private static List<Team> teams = new ArrayList<>();    // Is this correct?
+    private static ArrayList<Team> teams = new ArrayList<Team>();    // Is this correct?
 
     public Team(String teamName, String description) {
         this.teamID = nextID++;
