@@ -6,7 +6,7 @@ public class Team {
     private int teamID;
     private String teamName;
     private String description;
-    private static int nextID = 1;
+    private static int nextID = 0;
     private static List<Team> teams = new ArrayList<>();    // Is this correct?
 
     public Team(String teamName, String description) {
