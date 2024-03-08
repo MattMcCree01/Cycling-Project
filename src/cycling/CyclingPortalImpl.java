@@ -158,8 +158,22 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public double getStageLength(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO Annotate
+		Stage foundStage = null;
+		for (Race race : races) {
+			for (Stage stage : race.loadStages()) {
+				if (stage.getStageId() == stageId) {
+					foundStage = stage;
+					break;
+				}
+			}
+		}
+
+		if (foundStage != null) {
+			return foundStage.getStageLength();
+		} else {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
 	}
 
 	@Override
@@ -172,33 +186,96 @@ public class CyclingPortalImpl implements CyclingPortal {
 	public int addCategorizedClimbToStage(int stageId, Double location, CheckpointType type, Double averageGradient,
 			Double length) throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
 			InvalidStageTypeException {
-		// TODO Auto-generated method stub
-		return 0;
+		Stage foundStage = null;
+		for (Race race : races) {
+			for (Stage stage : race.loadStages()) {
+				if (stage.getStageId() == stageId) {
+					foundStage = stage;
+					break;
+				}
+			}
+		}
+		if (foundStage == null) {
+			throw new IDNotRecognisedException("ID not recognised");
+		} else if (location < 0 || location > foundStage.getStageLength()) {
+			throw new InvalidLocationException("Location is invalid");
+		} else if (foundStage.getStageType() == StageType.FLAT) {
+			throw new InvalidStageTypeException("Stage is not a mountain stage");
+		} else {
+			return foundStage.addClimbToStage(stageId, location, type, averageGradient, length);
+		}
 	}
-
+	
 	@Override
 	public int addIntermediateSprintToStage(int stageId, double location) throws IDNotRecognisedException,
 			InvalidLocationException, InvalidStageStateException, InvalidStageTypeException {
-		// TODO Auto-generated method stub
-		return 0;
+				Stage foundStage = null;
+				for (Race race : races) {
+					for (Stage stage : race.loadStages()) {
+						if (stage.getStageId() == stageId) {
+							foundStage = stage;
+							break;
+						}
+					}
+				}
+				if (foundStage == null) {
+					throw new IDNotRecognisedException("ID not recognised");
+				} else if (location < 0 || location > foundStage.getStageLength()) {
+					throw new InvalidLocationException("Location is invalid");
+				} else if (foundStage.getStageType() == StageType.HIGH_MOUNTAIN || foundStage.getStageType() == StageType.MEDIUM_MOUNTAIN){
+					throw new InvalidStageTypeException("Stage is a mountain stage");
+				} else {
+					return foundStage.addSprintToStage(stageId, location);
+				}
 	}
 
 	@Override
 	public void removeCheckpoint(int checkpointId) throws IDNotRecognisedException, InvalidStageStateException {
-		// TODO Auto-generated method stub
+		// TODO Annotate
+		Stage foundStage = null;
+		for (Race race : races) {
+			for (Stage stage : race.loadStages()) {
+				for (Checkpoint checkpoint : stage.getCheckpoints()) {
+					if (checkpoint.getCheckpointID() == checkpointId) {
+						foundStage = stage;
+						break;
+					}
+				}
+			}
+		}
 
+		if (foundStage != null) {
+			foundStage.removeCheckpointFromStage(checkpointId);
+		} else {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
 	}
 
 	@Override
 	public void concludeStagePreparation(int stageId) throws IDNotRecognisedException, InvalidStageStateException {
-		// TODO Auto-generated method stub
-
+		// TODO Annotate
+		for (Race race : races) {
+			for (Stage stage : race.loadStages()) {
+				if (stage.getStageId() == stageId) {
+					stage.concludeStagePreparation(stageId);
+					return;
+				}
+			}
+		}
+		throw new IDNotRecognisedException("ID not recognised");
 	}
 
 	@Override
 	public int[] getStageCheckpoints(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Annotate
+		for (Race race : races) {
+			for (Stage stage : race.loadStages()) {
+				if (stage.getStageId() == stageId) {
+					return stage.getStageCheckpoints(stageId);
+				}
+			}
+		}
+		throw new IDNotRecognisedException("ID not recognised");
 	}
 
 	@Override

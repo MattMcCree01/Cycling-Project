@@ -32,22 +32,40 @@ public class Stage {
     public String getStageName() {
         return stageName;
     }
+    public double getStageLength() {
+        return stageLength;
+    }
+    public Checkpoint[] getCheckpoints() {
+        return checkpoints;
+    }
+    public StageType getStageType() {
+        return stageType;
+    }
     
     public static void removeStage(int stageID) {
 
     }
 
-    public void addClimbToStage(int stageId, double location, double averageGradient, double length) {
-        Checkpoint newCheckpoint = new Checkpoint(stageId, location, averageGradient, length);
+    public int addClimbToStage(int stageId, double location, CheckpointType type, double averageGradient, double length) throws InvalidStageStateException{
+        if (this.status.equals("waiting for results")) {
+            throw new InvalidStageStateException("Stage is in an invalid state for this operation");
+        }
+        
+        Checkpoint newCheckpoint = new Checkpoint(stageId, location, type, averageGradient, length);
         Checkpoint[] newCheckpoints = new Checkpoint[checkpoints.length + 1];
         for (int i = 0; i < checkpoints.length; i++) {
             newCheckpoints[i] = checkpoints[i];
         }
         newCheckpoints[checkpoints.length] = newCheckpoint;
         checkpoints = newCheckpoints;
+        return newCheckpoint.getCheckpointID();
     }
 
-    public void addSprintToStage(int stageId, double location) {
+    public int addSprintToStage(int stageId, double location) throws InvalidStageStateException{
+        if (this.status.equals("waiting for results")) {
+            throw new InvalidStageStateException("Stage is in an invalid state for this operation");
+        }
+
         Checkpoint newCheckpoint = new Checkpoint(stageId, location);
         Checkpoint[] newCheckpoints = new Checkpoint[checkpoints.length + 1];
         for (int i = 0; i < checkpoints.length; i++) {
@@ -55,10 +73,11 @@ public class Stage {
         }
         newCheckpoints[checkpoints.length] = newCheckpoint;
         checkpoints = newCheckpoints;
+        return newCheckpoint.getCheckpointID();
     }
 
-    public void removeCheckpointFromStage(int checkpointId) throws IDNotRecognisedException, InvalidStageStateException {
-        if (status.equals("waiting for results")) {
+    public void removeCheckpointFromStage(int checkpointId) throws InvalidStageStateException {
+        if (this.status.equals("waiting for results")) {
             throw new InvalidStageStateException("Stage is in an invalid state for this operation");
         }
 
@@ -79,8 +98,6 @@ public class Stage {
                 }
             }
             checkpoints = newCheckpoints;
-        } else {
-            throw new IDNotRecognisedException("Checkpoint ID not recognised");
         }
     }
 
@@ -93,7 +110,11 @@ public class Stage {
         return outArray;
     }
 
-    public void concludeStagePreparation(int stageId) {
-        this.status = "waiting for results";
+    public void concludeStagePreparation(int stageId) throws InvalidStageStateException{
+        if (this.status == "waiting for results") {
+            throw new InvalidStageStateException("Stage is in an invalid state for this operation");
+        } else {
+            this.status = "waiting for results";
+        }
     }
 }
