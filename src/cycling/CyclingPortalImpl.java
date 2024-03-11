@@ -280,20 +280,53 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int createTeam(String name, String description) throws IllegalNameException, InvalidNameException {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO Annotate
+		if (name.length() < 1) {
+			throw new InvalidNameException("Name is empty");
+		} else if (name.length() > 30) {
+			throw new InvalidNameException("Name is too long");
+		} else if (name.contains(" ")) {
+			throw new InvalidNameException("Name contains whitespace");
+		}
+		
+		for (Team team : teams) {
+			if (team.getTeamName().equals(name)) {
+				throw new InvalidNameException("Name already exists");
+			}
+		}
+
+		teams.add(new Team(name, description));
+		return teams.get(teams.size() - 1).getTeamId();
 	}
 
 	@Override
 	public void removeTeam(int teamId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		// TODO Annotate
+		boolean found = false;
+		for (int i = 0; i < teams.size(); i++) {
+			if (teams.get(i).getTeamId() == teamId) {
+				teams.remove(i);
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			throw new IDNotRecognisedException("Team ID not recognised");
+		}
 	}
 
 	@Override
 	public int[] getTeams() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Annotate
+		if (teams.size() > 0) {
+			int[] teamIDs = new int[teams.size()];
+			for (int i = 0; i < teams.size(); i++) {
+				teamIDs[i] = teams.get(i).getTeamId();
+			}
+			return teamIDs;
+		} else {
+			return new int[] {};
+		}
 	}
 
 	@Override

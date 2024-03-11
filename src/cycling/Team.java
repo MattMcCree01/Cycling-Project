@@ -16,6 +16,14 @@ public class Team {
         teams.add(this);
     }
 
+    public int getTeamId() {
+        return teamID;
+    }
+    public String getTeamName() {
+        return teamName;
+    }
+
+    // Assume this isnt needed as we have list of teams in CyclingPortalImpl
     public static void removeTeam(int teamID) throws IDNotRecognisedException {
         boolean found = false;
         for (int i = 0; i < teams.size(); i++) {
