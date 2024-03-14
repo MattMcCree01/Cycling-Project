@@ -2,6 +2,9 @@ package cycling;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+
 
 public class Stage {
     private int stageId = 0;
@@ -117,5 +120,33 @@ public class Stage {
         } else {
             this.status = "waiting for results";
         }
+    }
+    public String getStageStatus() {
+        return status;
+    }
+    public void addParticipatingRider(Rider rider) {
+        Rider[] newRiders = new Rider[participatingRiders.length + 1];
+        for (int i = 0; i < participatingRiders.length; i++) {
+            newRiders[i] = participatingRiders[i];
+        }
+        newRiders[participatingRiders.length] = rider;
+        participatingRiders = newRiders;
+    }
+    public int[] getRiderPoints() {
+        int[] outArray = new int[participatingRiders.length];
+        for (int i = 0; i < participatingRiders.length; i++) {
+            outArray[i] = participatingRiders[i].getRacePoints();        
+        }
+        return outArray;
+    }
+    public int[] getRiderMountainPoints() {
+        int[] outArray = new int[participatingRiders.length];
+        for (int i = 0; i < participatingRiders.length; i++) {
+            outArray[i] = participatingRiders[i].getMountainPoints();        
+        }
+        return outArray;
+    }
+    public Rider[] getParticipatingRiders() {
+        return participatingRiders;
     }
 }

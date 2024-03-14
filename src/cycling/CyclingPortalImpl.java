@@ -15,8 +15,9 @@ import java.util.ArrayList;
  *
  */
 public class CyclingPortalImpl implements CyclingPortal {
-	private ArrayList<Race> races = new ArrayList<Race>();
-	private ArrayList<Team> teams = new ArrayList<Team>();
+	public ArrayList<Race> races = new ArrayList<Race>();
+	public ArrayList<Rider> riders = new ArrayList<Rider>();
+	public ArrayList<Team> teams = new ArrayList<Team>();
 
 	@Override
 	public int[] getRaceIds() {
@@ -331,14 +332,50 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int[] getTeamRiders(int teamId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		boolean idCheck = false;
+		for (Team team : teams) {
+			if (team.getTeamId() == teamId) {
+				idCheck = true;
+				break;
+			}
+		}if (!idCheck) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		ArrayList<Integer> teamRiders = new ArrayList<Integer>();
+		for (Rider rider : riders) {
+			if(rider.getTeamId() == teamId) {
+				teamRiders.add(rider.getRiderId());
+			}
+		}
+		return teamRiders.stream().mapToInt(i -> i).toArray();
+		
 	}
 
 	@Override
 	public int createRider(int teamID, String name, int yearOfBirth)
 			throws IDNotRecognisedException, IllegalArgumentException {
-		// TODO Auto-generated method stub
+		boolean idCheck = false;
+		for (Team team : teams) {
+			if (team.getTeamId() == teamID) {
+				idCheck = true;
+				break;
+			}
+		}
+		if (!idCheck) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		if (name == null || name.length() < 1) {
+			throw new IllegalArgumentException("Name is empty");
+		}
+		
+		if (name.contains(" ")) {
+			throw new IllegalArgumentException("Name contains whitespace");
+		}
+		if (yearOfBirth < 1900 || yearOfBirth > 2020) {
+			throw new IllegalArgumentException("Year of birth is invalid");
+		}
+		
+		riders.add(new Rider(teamID, name, yearOfBirth));
 		return 0;
 	}
 
@@ -352,14 +389,97 @@ public class CyclingPortalImpl implements CyclingPortal {
 	public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
 			throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointTimesException,
 			InvalidStageStateException {
-		// TODO Auto-generated method stub
+		boolean stageIdCheck = false;
+		Rider currentRider = null;
+		Stage currentStage = null;
+		for (Race race : races) {
+			Stage[] stages = race.loadStages();
+			for (Stage stage : stages) {
+				if (stage.getStageId() == stageId) {
+					stageIdCheck = true;
+					currentStage = stage;
+					break;
+				}
+			}	
+		}
+		if (!stageIdCheck) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		boolean riderIdCheck = false;
+		for (Rider rider : riders) {
+			if (rider.getRiderId() == riderId) {
+				riderIdCheck = true;
+				currentRider = rider;
+				break;
+			}
+		}
+		if (!riderIdCheck) {
+			throw new IDNotRecognisedException("ID not recognised");
+
+
+
+		
 
 	}
+		//check for duplicated results
+		for (Rider rider : riders) {
+			if (rider.getRiderId() == riderId) {
+				for (stageResults result : rider.getStageResults()) {
+					if (result.getStageId() == stageId) {
+						throw new DuplicatedResultException("Duplicated result");
+					}
+				}
+			}
+		}
+		//check for invalid checkpoint times
+		for (LocalTime checkpoint : checkpoints) {
+			if (checkpoint.isBefore(LocalTime.of(0, 0, 0))) {
+				throw new InvalidCheckpointTimesException("Invalid checkpoint times");
+			}
+		}
+		//check there are 2 more times in results than the number of checkpoints
+		if (checkpoints.length != 2 * currentRider.getStageResults().length) {
+			throw new InvalidCheckpointTimesException("Invalid checkpoint times");
+		}
+		if (currentStage.getStageStatus() != "waiting for results") {
+			throw new InvalidStageStateException("Invalid stage state");
+		}
 
+		currentRider.registerRiderResultsInStage(stageId, checkpoints);
+		currentStage.addParticipatingRider(currentRider);
+		//TODO add points to rider, and adjust other riders points based on new results, change adjusted elapsed times for all riders
+	}
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		boolean stageIdCheck = false;
+		Rider currentRider = null;
+		Stage currentStage = null;
+		for (Race race : races) {
+			Stage[] stages = race.loadStages();
+			for (Stage stage : stages) {
+				if (stage.getStageId() == stageId) {
+					stageIdCheck = true;
+					currentStage = stage;
+					break;
+				}
+			}	
+		}
+		if (!stageIdCheck) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		boolean riderIdCheck = false;
+		for (Rider rider : riders) {
+			if (rider.getRiderId() == riderId) {
+				riderIdCheck = true;
+				currentRider = rider;
+				break;
+			}
+		}
+		if (!riderIdCheck) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		return currentRider.getRiderResultsInStage(stageId);
+		
 	}
 
 	@Override
@@ -376,10 +496,40 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		boolean stageIdCheck = false;
+		Stage currentStage = null;
+		for (Race race : races) {
+			Stage[] stages = race.loadStages();
+			for (Stage stage : stages) {
+				if (stage.getStageId() == stageId) {
+					stageIdCheck = true;
+					currentStage = stage;
+					break;
+				}
+			}	
+		}
+		if (!stageIdCheck) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		ArrayList<Rider> orderedRiders = new ArrayList<Rider>();
+		for (Rider rider : currentStage.getParticipatingRiders()) {
+			if (orderedRiders.size() == 0) {
+				orderedRiders.add(rider);
+			} else {
+				for (int i = 0; i < orderedRiders.size(); i++) {
+					if (rider.getStageElapsedTime(stageId).isBefore(orderedRiders.get(i).getStageElapsedTime(stageId))) {
+						orderedRiders.add(i, rider);
+						break;
+					}
+				}
+				
+			}
+		}
 
+		return orderedRiders.stream().mapToInt(i -> i.getRiderId()).toArray();
+		
+			
+	}	
 	@Override
 	public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId) throws IDNotRecognisedException {
 		// TODO Auto-generated method stub
@@ -388,15 +538,45 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int[] getRidersPointsInStage(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		boolean stageIdCheck = false;
+		Stage currentStage = null;
+		for (Race race : races) {
+			Stage[] stages = race.loadStages();
+			for (Stage stage : stages) {
+				if (stage.getStageId() == stageId) {
+					stageIdCheck = true;
+					currentStage = stage;
+					break;
+				}
+			}	
+		}
+		if (!stageIdCheck) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		return currentStage.getRiderPoints();
 	}
+		
 
 	@Override
 	public int[] getRidersMountainPointsInStage(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		boolean stageIdCheck = false;
+		Stage currentStage = null;
+		for (Race race : races) {
+			Stage[] stages = race.loadStages();
+			for (Stage stage : stages) {
+				if (stage.getStageId() == stageId) {
+					stageIdCheck = true;
+					currentStage = stage;
+					break;
+				}
+			}	
+		}
+		if (!stageIdCheck) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		return currentStage.getRiderMountainPoints();
 	}
+	
 
 	@Override
 	public void eraseCyclingPortal() {

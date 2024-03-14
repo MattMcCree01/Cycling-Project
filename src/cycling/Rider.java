@@ -6,37 +6,84 @@ public class Rider {
     private int id = 0 ;
     private String name;
     private int BirthYear;
-    private int RacePoints;
-    private int MountainPoints;
     private int teamID;
     private ArrayList<stageResults> stageResults;
-    private LocalTime elapsedTime;
-    private ArrayList<Rider> riders = new ArrayList<Rider>();
+    
 
     public Rider (int teamId, String name, int yearOfBirth) {
         this.id = id++;
         this.teamID = teamId;
         this.name = name;
         this.BirthYear = yearOfBirth;
-        this.RacePoints = 0;
-        this.MountainPoints = 0;
         this.stageResults = new ArrayList<stageResults>();
-        this.elapsedTime = LocalTime.of(0, 0, 0);
+        
+    }
+    public int getRiderId() {
+        return id;
+    }
+    public int getTeamId() {
+        return teamID;
+    }
+    public stageResults[] getStageResults() {
+        return stageResults.toArray(new stageResults[0]);
     }
     public void removeRider(int riderId) {
         
     }
-    public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints) {
+    public void registerRiderResultsInStage(int stageId, LocalTime... checkpoints) {
         
     }
-    public LocalTime[] getRiderResultsInStage(int stageId, int riderId) {
+    public LocalTime[] getRiderResultsInStage(int stageId) {
+        for (stageResults stageResults : stageResults) {
+            if(stageResults.getStageId() == stageId) {
+                return stageResults.getResults();
+                
+            }
+        }
+        return null;
+
+    }
+    public LocalTime[] getRiderAdjustedElapsedTimeInStage(int stageID) {
         return null;
     }
-    public LocalTime[] getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) {
-        return null;
-    }
-    public void deleteRiderResultsInStage(int stageId, int riderId) {
+    public void deleteRiderResultsInStage(int stageId) {
         
+    }
+    public int getRacePoints(){
+        int points = 0;
+        for (stageResults stageResults : stageResults) {
+            points += stageResults.getStagePoints();
+
+        }
+        return points;
+    }
+    public int getMountainPoints(){
+        int points = 0;
+        for (stageResults stageResults : stageResults) {
+            points += stageResults.getStageMountainPoints();
+
+        }
+        return points;
+    }
+    public LocalTime getElapsedTime() {
+        LocalTime elapsedTime = LocalTime.of(0, 0, 0);
+        for (stageResults stageResults : stageResults) {
+            elapsedTime = elapsedTime.plusHours(stageResults.getStageTime().getHour());
+            elapsedTime = elapsedTime.plusMinutes(stageResults.getStageTime().getMinute());
+            elapsedTime = elapsedTime.plusSeconds(stageResults.getStageTime().getSecond());
+        }
+        return elapsedTime;
+    }
+    public LocalTime getStageElapsedTime(int stageId) {
+        LocalTime elapsedTime = LocalTime.of(0, 0, 0);
+        for (stageResults stageResults : stageResults) {
+            if (stageResults.getStageId() == stageId) {
+                elapsedTime = elapsedTime.plusHours(stageResults.getStageTime().getHour());
+                elapsedTime = elapsedTime.plusMinutes(stageResults.getStageTime().getMinute());
+                elapsedTime = elapsedTime.plusSeconds(stageResults.getStageTime().getSecond());
+            }
+        }
+        return elapsedTime;
     }
 
 

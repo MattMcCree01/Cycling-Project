@@ -1,4 +1,3 @@
-import cycling.BadMiniCyclingPortalImpl;
 import cycling.CyclingPortalImpl;
 import cycling.IllegalNameException;
 import cycling.InvalidNameException;
