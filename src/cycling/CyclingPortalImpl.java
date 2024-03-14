@@ -138,7 +138,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 		}
 		foundRace.addStageToRace(raceId, stageName, description, length, startTime.toLocalTime(), type);
 		Stage[] stages = foundRace.loadStages();
-		return stages[-1].getStageId();
+		return stages[stages.length - 1].getStageId();
 	}
 
 	@Override

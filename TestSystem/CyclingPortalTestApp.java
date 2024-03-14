@@ -1,7 +1,8 @@
-import cycling.CyclingPortalImpl;
-import cycling.IllegalNameException;
-import cycling.InvalidNameException;
-import cycling.MiniCyclingPortal;
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import cycling.*;
+
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a
@@ -47,6 +48,38 @@ public class CyclingPortalTestApp {
 		assert (portal2.getTeams().length == 1)
 				: "Portal2 should have one team.";
 
+
+		try{
+			LocalDateTime time = LocalDateTime.now();
+			int race1Id = portal1.createRace("Race1", "race1");
+			portal1.createRace("Race2", "race2");
+			portal1.addStageToRace(race1Id, "stage1", "null", 10,time , StageType.HIGH_MOUNTAIN);
+			int[] stages = portal1.getRaceStages(race1Id);
+			portal1.addCategorizedClimbToStage(stages[0],10.0, CheckpointType.HC, 3.5, 8.1);
+		}
+		catch (IllegalNameException e) {
+			e.printStackTrace();
+		} catch (InvalidNameException e) {
+			e.printStackTrace();
+		}catch(IDNotRecognisedException e){
+			e.printStackTrace();
+		}catch(InvalidLengthException e){
+			e.printStackTrace();
+		}
+		catch(InvalidStageStateException e){
+			e.printStackTrace();
+		}
+		catch(InvalidStageTypeException e){
+			e.printStackTrace();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+
+				
+
 	}
+
 
 }
