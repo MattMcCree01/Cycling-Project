@@ -13,6 +13,7 @@ public class Stage {
     private LocalTime startTime;
     private String status;
     private Checkpoint[] checkpoints; 
+    private Rider[] participatingRiders;
 
     public Stage(int raceID, String stageName, String stageDescription, double stageLength, LocalTime startTime, StageType stageType) {
         this.stageId = stageId++;
