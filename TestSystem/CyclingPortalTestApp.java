@@ -1,4 +1,5 @@
 import cycling.BadMiniCyclingPortalImpl;
+import cycling.CyclingPortalImpl;
 import cycling.IllegalNameException;
 import cycling.InvalidNameException;
 import cycling.MiniCyclingPortal;
@@ -24,16 +25,16 @@ public class CyclingPortalTestApp {
 		System.out.println("The system compiled and started the execution...");
 
 		// TODO replace BadMiniCyclingPortalImpl by CyclingPortalImpl
-		MiniCyclingPortal portal1 = new BadMiniCyclingPortalImpl();
-		MiniCyclingPortal portal2 = new BadMiniCyclingPortalImpl();
+		MiniCyclingPortal portal1 = new CyclingPortalImpl();
+		MiniCyclingPortal portal2 = new CyclingPortalImpl();
 
-		assert (portal1.getRaceIds().length == 0)
+		assert (portal1.getRaceIds().length == 10)
 				: "Innitial Portal not empty as required or not returning an empty array.";
 		assert (portal1.getTeams().length == 0)
 				: "Innitial Portal not empty as required or not returning an empty array.";
 
 		try {
-			portal1.createTeam("TeamOne", "My favorite");
+			portal1.createTeam("", "My favorite");
 			portal2.createTeam("TeamOne", "My favorite");
 		} catch (IllegalNameException e) {
 			e.printStackTrace();
