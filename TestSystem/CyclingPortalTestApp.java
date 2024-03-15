@@ -25,8 +25,8 @@ public class CyclingPortalTestApp {
 		System.out.println("The system compiled and started the execution...");
 
 		// TODO replace BadMiniCyclingPortalImpl by CyclingPortalImpl
-		MiniCyclingPortal portal1 = new CyclingPortalImpl();
-		MiniCyclingPortal portal2 = new CyclingPortalImpl();
+		CyclingPortal portal1 = new CyclingPortalImpl();
+		CyclingPortal portal2 = new CyclingPortalImpl();
 
 		assert (portal1.getRaceIds().length == 0)
 				: "Innitial Portal not empty as required or not returning an empty array.";
@@ -48,38 +48,93 @@ public class CyclingPortalTestApp {
 		assert (portal2.getTeams().length == 1)
 				: "Portal2 should have one team.";
 
+		
+		// Test the creation of race, both exceptions are successful
+		System.out.println("-------------------Testing the creation");
+		try {
+            int raceId = portal1.createRace("Race3", "race3 description");
+            if (raceId != -1) {
+                System.out.println("Race created successfully. Race ID: " + raceId);
+            } else {
+                System.out.println("Failed to create race.");
+            }
+        } catch (IllegalNameException e) {
+            System.out.println("IllegalNameException: " + e.getMessage());
+        } catch (InvalidNameException e) {
+            System.out.println("InvalidNameException: " + e.getMessage());
+        }
 
+		// Test the removal of a race
+		// TODO - test the removal
+
+		// Test the addition of a stage
+		System.out.println("-------------------Testing the addition of a stage");
 		try{
 			LocalDateTime time = LocalDateTime.now();
-			int race1Id = portal1.createRace("Race1", "race1");
-			portal1.createRace("Race2", "race2");
-			portal1.addStageToRace(race1Id, "stage1", "null", 10,time , StageType.HIGH_MOUNTAIN);
-			int[] stages = portal1.getRaceStages(race1Id);
-			portal1.addCategorizedClimbToStage(stages[0],10.0, CheckpointType.HC, 3.5, 8.1);
-		}
-		catch (IllegalNameException e) {
+			int raceId = 0;
+			int stageId = portal1.addStageToRace(raceId, "Stage1", "Stage1 description", 10, time, StageType.HIGH_MOUNTAIN);
+			if (stageId != -1) {
+				System.out.println("Stage added successfully. Stage ID: " + stageId);
+			} else {
+				System.out.println("Failed to add stage.");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		} catch (IllegalNameException e) {
 			e.printStackTrace();
 		} catch (InvalidNameException e) {
 			e.printStackTrace();
-		}catch(IDNotRecognisedException e){
-			e.printStackTrace();
-		}catch(InvalidLengthException e){
+		} catch (InvalidLengthException e) {
 			e.printStackTrace();
 		}
-		catch(InvalidStageStateException e){
+
+		// Test the get stage length
+		System.out.println("-------------------Testing the get stage length");
+		try{
+			int stageId = 0;
+			double length = portal1.getStageLength(stageId);
+			if (length != -1) {
+				System.out.println("Stage length: " + length);
+			} else {
+				System.out.println("Failed to get stage length.");
+			}
+		} catch (IDNotRecognisedException e) {
 			e.printStackTrace();
 		}
-		catch(InvalidStageTypeException e){
+
+		// Test the get number of stages
+		System.out.println("-------------------Testing the get number of stages");
+		try{
+			int raceId = 0;
+			int numStages = portal1.getNumberOfStages(raceId);
+			if (numStages != -1) {
+				System.out.println("Number of stages: " + numStages);
+			} else {
+				System.out.println("Failed to get number of stages.");
+			}
+		} catch (IDNotRecognisedException e) {
 			e.printStackTrace();
 		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+
+
 		
 
-				
 
+		// Test the viewing of details, expection is successful
+		System.out.println("-------------------Testing the viewing of details");
+		try {
+			String details = portal1.viewRaceDetails(0);
+			if (details != null) {
+				System.out.println(details);
+			} else {
+				System.out.println("Failed to view details");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		}
 	}
+
+
 
 
 }
