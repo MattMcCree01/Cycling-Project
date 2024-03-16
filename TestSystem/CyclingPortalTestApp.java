@@ -116,12 +116,9 @@ public class CyclingPortalTestApp {
 			e.printStackTrace();
 		}
 
-
-		
-
-
-		// Test the viewing of details, expection is successful
-		System.out.println("-------------------Testing the viewing of details");
+		// Test the viewing of race details, expection is successful
+		// TODO - The correct length is not being returned
+		System.out.println("-------------------Testing the viewing of race details");
 		try {
 			String details = portal1.viewRaceDetails(0);
 			if (details != null) {
@@ -132,8 +129,97 @@ public class CyclingPortalTestApp {
 		} catch (IDNotRecognisedException e) {
 			e.printStackTrace();
 		}
-	}
 
+		/// Test the getRaceStages, exception is successful
+		// TODO - Returns ("Stages: [I@1b6d3586")
+		System.out.println("-------------------Testing the getRaceStages");
+		try {
+			int radeId = 0;
+			int[] stages = portal1.getRaceStages(radeId);
+			if (stages != null) {
+				System.out.println("Stages: " + stages);
+			} else {
+				System.out.println("Failed to get stages");
+				
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		}
+
+		// Test removeStage
+		// TODO - test the removal of stages
+
+		// Test the addition of a climb checkpoint
+		System.out.println("-------------------Testing the addition of a climb");
+		try {
+			int stageId = 0;
+			int climbId = portal1.addCategorizedClimbToStage(stageId, 1.0, CheckpointType.C4, 4.7, 5.0);
+			if (climbId != -1) {
+				System.out.println("Climb added successfully. Climb ID: " + climbId);
+			} else {
+				System.out.println("Failed to add climb.");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		} catch (InvalidLocationException e) {
+			e.printStackTrace();
+		} catch (InvalidStageStateException e) {
+			e.printStackTrace();
+		} catch (InvalidStageTypeException e) {
+			e.printStackTrace();
+		}
+
+		// Test the addition of a Sprint chechpoint
+		// TODO - Sprint is not being added as Mountain stage
+		System.out.println("-------------------Testing the addition of a sprint");
+		try {
+			int stageId = 0;
+			int checkpointId = portal1.addIntermediateSprintToStage(stageId, 1.5);
+			if (checkpointId != -1) {
+				System.out.println("Sprint added successfully. Sprint ID: " + checkpointId);
+			} else {
+				System.out.println("Failed to add sprint.");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		} catch (InvalidLocationException e) {
+			e.printStackTrace();
+		} catch (InvalidStageStateException e) {
+			e.printStackTrace();
+		} catch (InvalidStageTypeException e) {
+			e.printStackTrace();
+		}
+
+		// Test the removal of a checkpoint
+		// TODO - test the removal of checkpoints
+
+		// Test the getStageCheckpoints
+		// TODO - Same issue with the getRaceStages
+		System.out.println("-------------------Testing the getStageCheckpoints");
+		try {
+			int stageId = 0;
+			int[] checkpoints = portal1.getStageCheckpoints(stageId);
+			if (checkpoints != null) {
+				System.out.println("Checkpoints: " + checkpoints);
+			} else {
+				System.out.println("Failed to get checkpoints");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		}
+
+		// Test the conclusion of stage preparation
+		System.out.println("-------------------Testing the conclusion of stage preparation");
+		try {
+			int stageId = 0;
+			portal1.concludeStagePreparation(stageId);
+			System.out.println("Stage preparation concluded successfully.");
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		} catch (InvalidStageStateException e) {
+			e.printStackTrace();
+		}
+	}
 
 
 
