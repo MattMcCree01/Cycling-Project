@@ -85,4 +85,11 @@ public class Race {
     public void addStage(Stage stage){
         stages.add(stage);
     }
+    public void updateRaceLength(){
+        double length = 0;
+        for (Stage stage : stages) {
+            length += stage.getStageLength();
+        }
+        this.totalLength = length;
+    }
 }

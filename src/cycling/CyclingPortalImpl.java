@@ -18,6 +18,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 	public ArrayList<Race> races = new ArrayList<Race>();
 	public ArrayList<Rider> riders = new ArrayList<Rider>();
 	public ArrayList<Team> teams = new ArrayList<Team>();
+	
 
 	@Override
 	public int[] getRaceIds() {
@@ -137,6 +138,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 			}
 		}
 		foundRace.addStageToRace(raceId, stageName, description, length, startTime.toLocalTime(), type);
+		foundRace.updateRaceLength();
 		Stage[] stages = foundRace.loadStages();
 		return stages[stages.length - 1].getStageId();
 	}
@@ -200,8 +202,8 @@ public class CyclingPortalImpl implements CyclingPortal {
 			throw new IDNotRecognisedException("ID not recognised");
 		} else if (location < 0 || location > foundStage.getStageLength()) {
 			throw new InvalidLocationException("Location is invalid");
-		} else if (foundStage.getStageType() == StageType.FLAT) {
-			throw new InvalidStageTypeException("Stage is not a mountain stage");
+		} else if (foundStage.getStageType() == StageType.TT) {
+			throw new InvalidStageTypeException("time trial stages do not have checkpoints");
 		} else {
 			return foundStage.addClimbToStage(stageId, location, type, averageGradient, length);
 		}
@@ -223,8 +225,8 @@ public class CyclingPortalImpl implements CyclingPortal {
 					throw new IDNotRecognisedException("ID not recognised");
 				} else if (location < 0 || location > foundStage.getStageLength()) {
 					throw new InvalidLocationException("Location is invalid");
-				} else if (foundStage.getStageType() == StageType.HIGH_MOUNTAIN || foundStage.getStageType() == StageType.MEDIUM_MOUNTAIN){
-					throw new InvalidStageTypeException("Stage is a mountain stage");
+				} else if (foundStage.getStageType() == StageType.TT){
+					throw new InvalidStageTypeException("Time trial stages do not have checkpoints");
 				} else {
 					return foundStage.addSprintToStage(stageId, location);
 				}
@@ -415,11 +417,6 @@ public class CyclingPortalImpl implements CyclingPortal {
 		}
 		if (!riderIdCheck) {
 			throw new IDNotRecognisedException("ID not recognised");
-
-
-
-		
-
 	}
 		//check for duplicated results
 		for (Rider rider : riders) {
@@ -453,13 +450,11 @@ public class CyclingPortalImpl implements CyclingPortal {
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
 		boolean stageIdCheck = false;
 		Rider currentRider = null;
-		Stage currentStage = null;
 		for (Race race : races) {
 			Stage[] stages = race.loadStages();
 			for (Stage stage : stages) {
 				if (stage.getStageId() == stageId) {
 					stageIdCheck = true;
-					currentStage = stage;
 					break;
 				}
 			}	
