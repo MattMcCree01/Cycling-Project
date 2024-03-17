@@ -1,6 +1,8 @@
 import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
+
 import cycling.*;
 
 
@@ -137,7 +139,7 @@ public class CyclingPortalTestApp {
 			int radeId = 0;
 			int[] stages = portal1.getRaceStages(radeId);
 			if (stages != null) {
-				System.out.println("Stages: " + stages);
+				System.out.println("Stages: " + Arrays.toString(stages));
 			} else {
 				System.out.println("Failed to get stages");
 				
@@ -200,7 +202,7 @@ public class CyclingPortalTestApp {
 			int stageId = 0;
 			int[] checkpoints = portal1.getStageCheckpoints(stageId);
 			if (checkpoints != null) {
-				System.out.println("Checkpoints: " + checkpoints);
+				System.out.println("Checkpoints: " + Arrays.toString(checkpoints));
 			} else {
 				System.out.println("Failed to get checkpoints");
 			}
@@ -219,6 +221,33 @@ public class CyclingPortalTestApp {
 		} catch (InvalidStageStateException e) {
 			e.printStackTrace();
 		}
+
+		// Test the creation of a team
+		System.out.println("-------------------Testing the creation of a team");
+		try {
+			int teamId = portal1.createTeam("TestTeamName", "TestTeam description");
+			if (teamId != -1) {
+				System.out.println("Team created successfully. Team ID: " + teamId);
+			} else {
+				System.out.println("Failed to create team.");
+			}
+		} catch (IllegalNameException e) {
+			e.printStackTrace();
+		} catch (InvalidNameException e) {
+			e.printStackTrace();
+		}
+
+		// Test the removal of a team
+		System.out.println("-------------------Testing the removal of a team");
+		try {
+			int teamId = 0;
+			portal1.removeTeam(teamId);
+			System.out.println("Team removed successfully.");
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		}
+
+		
 	}
 
 
