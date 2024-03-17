@@ -31,6 +31,7 @@ public class Rider {
         
     }
     public void registerRiderResultsInStage(int stageId, LocalTime... checkpoints) {
+        stageResults.add(new stageResults(stageId, checkpoints));
         
     }
     public LocalTime[] getRiderResultsInStage(int stageId) {
@@ -84,6 +85,14 @@ public class Rider {
             }
         }
         return elapsedTime;
+    }
+    public int getRiderStagePoints(int stageId) {
+        for (stageResults stageResults : stageResults) {
+            if (stageResults.getStageId() == stageId) {
+                return stageResults.getStagePoints();
+            }
+        }
+        return 0;
     }
 
 

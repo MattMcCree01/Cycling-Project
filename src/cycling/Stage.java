@@ -64,6 +64,14 @@ public class Stage {
         checkpoints = newCheckpoints;
         return newCheckpoint.getCheckpointID();
     }
+    public Checkpoint getCheckpoint(int checkpointId) {
+        for (int i = 0; i < checkpoints.length; i++) {
+            if (checkpoints[i].getCheckpointID() == checkpointId) {
+                return checkpoints[i];
+            }
+        }
+        return null;
+    }
 
     public int addSprintToStage(int stageId, double location) throws InvalidStageStateException{
         if (this.status.equals("waiting for results")) {
@@ -135,7 +143,7 @@ public class Stage {
     public int[] getRiderPoints() {
         int[] outArray = new int[participatingRiders.length];
         for (int i = 0; i < participatingRiders.length; i++) {
-            outArray[i] = participatingRiders[i].getRacePoints();        
+            outArray[i] = participatingRiders[i].getRiderStagePoints(stageId);        
         }
         return outArray;
     }
