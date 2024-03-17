@@ -33,22 +33,9 @@ public class CyclingPortalTestApp {
 		System.out.println("-------------------Testing the creation of a race");
 		try {
             int raceId = portal1.createRace("Race1", "race1 description");
-            if (raceId != -1) {
-                System.out.println("Race created successfully. Race ID: " + raceId);
-            } else {
-                System.out.println("Failed to create race.");
-            }
-        } catch (IllegalNameException e) {
-            System.out.println("IllegalNameException: " + e.getMessage());
-        } catch (InvalidNameException e) {
-            System.out.println("InvalidNameException: " + e.getMessage());
-        }
-
-		//TODO - Remove
-		try {
-            int raceId = portal1.createRace("Race2-ToBeDeleted", "race2 description-ToBeDeleted");
-            if (raceId != -1) {
-                System.out.println("Race created successfully. Race ID: " + raceId);
+			int raceId2 = portal1.createRace("Race2-ToBeDeleted", "race2 description-ToBeDeleted");
+            if (raceId != -1 & raceId2 != -1) {
+                System.out.println("Race created successfully. Race ID: " + raceId + " and " + raceId2);
             } else {
                 System.out.println("Failed to create race.");
             }
@@ -71,8 +58,9 @@ public class CyclingPortalTestApp {
 			LocalDateTime time = LocalDateTime.now();
 			int raceId = 0;
 			int stageId = portal1.addStageToRace(raceId, "Stage1", "Stage1 description", 10, time, StageType.HIGH_MOUNTAIN);
-			if (stageId != -1) {
-				System.out.println("Stage added successfully. Stage ID: " + stageId);
+			int stageId2 = portal1.addStageToRace(raceId, "Stage2", "Stage2 description", 10, time, StageType.HIGH_MOUNTAIN);
+			if (stageId != -1 & stageId2 != -1) {
+				System.out.println("Stage added successfully. Stage ID: " + stageId + " and " + stageId2);
 			} else {
 				System.out.println("Failed to add stage.");
 			}
@@ -85,27 +73,6 @@ public class CyclingPortalTestApp {
 		} catch (InvalidLengthException e) {
 			e.printStackTrace();
 		}
-
-		//TODO remove
-		try{
-			LocalDateTime time = LocalDateTime.now();
-			int raceId = 0;
-			int stageId = portal1.addStageToRace(raceId, "Stage2", "Stage2 description", 10, time, StageType.HIGH_MOUNTAIN);
-			if (stageId != -1) {
-				System.out.println("Stage added successfully. Stage ID: " + stageId);
-			} else {
-				System.out.println("Failed to add stage.");
-			}
-		} catch (IDNotRecognisedException e) {
-			e.printStackTrace();
-		} catch (IllegalNameException e) {
-			e.printStackTrace();
-		} catch (InvalidNameException e) {
-			e.printStackTrace();
-		} catch (InvalidLengthException e) {
-			e.printStackTrace();
-		}
-
 
 		// Test the get stage length
 		System.out.println("-------------------Testing the get stage length");
@@ -239,22 +206,9 @@ public class CyclingPortalTestApp {
 		System.out.println("-------------------Testing the creation of a team");
 		try {
 			int teamId = portal1.createTeam("TestTeamName", "TestTeam description");
-			if (teamId != -1) {
-				System.out.println("Team created successfully. Team ID: " + teamId);
-			} else {
-				System.out.println("Failed to create team.");
-			}
-		} catch (IllegalNameException e) {
-			e.printStackTrace();
-		} catch (InvalidNameException e) {
-			e.printStackTrace();
-		}
-
-		// Creating another team to test removal
-		try {
-			int teamId = portal1.createTeam("TestTeamName-ToBeDeleted", "TestTeam description-ToBeDeleted");
-			if (teamId != -1) {
-				System.out.println("Team created successfully. Team ID: " + teamId);
+			int teamId2 = portal1.createTeam("TestTeamName-ToBeDeleted", "TestTeam description-ToBeDeleted");
+			if (teamId != -1 & teamId2 != -1) {
+				System.out.println("Team created successfully. Team ID: " + teamId + " and " + teamId2);
 			} else {
 				System.out.println("Failed to create team.");
 			}
