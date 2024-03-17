@@ -3,7 +3,8 @@ import java.util.ArrayList;
 import java.time.LocalTime;
 
 public class Rider {
-    private int id = 0 ;
+    private static int idCounter = 0;
+    private int id;
     private String name;
     private int BirthYear;
     private int teamID;
@@ -11,7 +12,7 @@ public class Rider {
     
 
     public Rider (int teamId, String name, int yearOfBirth) {
-        this.id = id++;
+        this.id = idCounter++;
         this.teamID = teamId;
         this.name = name;
         this.BirthYear = yearOfBirth;

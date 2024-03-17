@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Race {
-    
-    private int raceId = 0;
+    private static int raceIdCounter = 0;
+    private int raceId;
     private String raceName;
     private String raceDescription;
     private double totalLength;
@@ -18,7 +18,7 @@ public class Race {
     public Race(String raceName, String raceDescription){
         this.raceName = raceName;
         this.raceDescription = raceDescription;
-        this.raceId = raceId++;
+        this.raceId = raceIdCounter++;
         this.totalLength = 0;
         this.stages = new ArrayList<Stage>();
         this.GeneralClassification = new ArrayList<Rider>();

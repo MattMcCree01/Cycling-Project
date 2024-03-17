@@ -7,7 +7,8 @@ import java.util.Comparator;
 
 
 public class Stage {
-    private int stageId = 0;
+    private static int stageIdCounter = 0;
+    private int stageId;
     private int raceID;
     private String stageName;
     private StageType stageType;
@@ -19,7 +20,7 @@ public class Stage {
     private Rider[] participatingRiders;
 
     public Stage(int raceID, String stageName, String stageDescription, double stageLength, LocalTime startTime, StageType stageType) {
-        this.stageId = stageId++;
+        this.stageId = stageIdCounter++;
         this.raceID = raceID;
         this.stageName = stageName;
         this.stageType = stageType;
