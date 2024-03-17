@@ -308,6 +308,11 @@ public class CyclingPortalImpl implements CyclingPortal {
 		boolean found = false;
 		for (int i = 0; i < teams.size(); i++) {
 			if (teams.get(i).getTeamId() == teamId) {
+				for (Rider rider : riders) {
+					if (rider.getTeamId() == teamId) {
+						rider.setTeamId(0); // Set the current rider's team to 0 ('no team' team)
+					}
+				}
 				teams.remove(i);
 				found = true;
 				break;

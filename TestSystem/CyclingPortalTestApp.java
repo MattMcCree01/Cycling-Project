@@ -119,7 +119,6 @@ public class CyclingPortalTestApp {
 		}
 
 		// Test the viewing of race details, expection is successful
-		// TODO - The correct length is not being returned
 		System.out.println("-------------------Testing the viewing of race details");
 		try {
 			String details = portal1.viewRaceDetails(0);
@@ -133,7 +132,6 @@ public class CyclingPortalTestApp {
 		}
 
 		/// Test the getRaceStages, exception is successful
-		// TODO - Returns ("Stages: [I@1b6d3586")
 		System.out.println("-------------------Testing the getRaceStages");
 		try {
 			int radeId = 0;
@@ -172,7 +170,6 @@ public class CyclingPortalTestApp {
 		}
 
 		// Test the addition of a Sprint chechpoint
-		// TODO - Sprint is not being added as Mountain stage
 		System.out.println("-------------------Testing the addition of a sprint");
 		try {
 			int stageId = 0;
@@ -196,7 +193,6 @@ public class CyclingPortalTestApp {
 		// TODO - test the removal of checkpoints
 
 		// Test the getStageCheckpoints
-		// TODO - Same issue with the getRaceStages
 		System.out.println("-------------------Testing the getStageCheckpoints");
 		try {
 			int stageId = 0;
@@ -237,6 +233,10 @@ public class CyclingPortalTestApp {
 			e.printStackTrace();
 		}
 
+		// Test the getTeams
+		System.out.println("-------------------Testing the getTeams");
+		System.out.println("Teams: " + Arrays.toString(portal1.getTeams()));
+
 		// Test the removal of a team
 		System.out.println("-------------------Testing the removal of a team");
 		try {
@@ -247,9 +247,42 @@ public class CyclingPortalTestApp {
 			e.printStackTrace();
 		}
 
-		
+		// Test the getTeamRiders
+		System.out.println("-------------------Testing the getTeamRiders");
+		try {
+			int teamId = 2;
+			int[] riders = portal1.getTeamRiders(teamId);
+			if (riders != null) {
+				System.out.println("Riders: " + Arrays.toString(riders));
+			} else {
+				System.out.println("Failed to get riders");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		}		
+
+		// Test the creation of a rider
+		System.out.println("-------------------Testing the creation of a rider");
+		try {
+			int riderId = portal1.createRider(2, "TestRider1", 2000);
+			if (riderId != -1) {
+				System.out.println("Rider created successfully. Rider ID: " + riderId);
+			} else {
+				System.out.println("Failed to create rider.");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+
+		// Test the removal of a rider
+		// TODO - test the removal of riders
+
+		// Test the registering of rider results in stage
+
 	}
 
-
+	
 
 }

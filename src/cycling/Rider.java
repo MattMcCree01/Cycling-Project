@@ -24,6 +24,9 @@ public class Rider {
     public int getTeamId() {
         return teamID;
     }
+    public void setTeamId(int newTeamId) {
+        this.teamID = newTeamId;
+    }
     public stageResults[] getStageResults() {
         return stageResults.toArray(new stageResults[0]);
     }
