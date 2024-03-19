@@ -444,7 +444,15 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 		currentRider.registerRiderResultsInStage(stageId, checkpoints);
 		currentStage.addParticipatingRider(currentRider);
-		//TODO add points to rider, and adjust other riders points based on new results, change adjusted elapsed times for all riders
+
+		Checkpoint[] currentCheckpoints = currentStage.getCheckpoints(); 
+		for (int i = 0; i < checkpoints.length; i++) {
+			currentCheckpoints[i].addRiderToRank(currentRider, checkpoints[i]);
+		}
+		
+		
+
+		//TODO add points to rider, and adjust other riders points based on new results
 	}
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
@@ -632,5 +640,18 @@ public class CyclingPortalImpl implements CyclingPortal {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public Stage getStageById(int stageId){
+		Stage currentStage = null;
+		for (Race race : races) {
+			if(race.loadStage(stageId) != null) {
+				currentStage = race.loadStage(stageId);
+				return currentStage;
+				
+			}
 
+		}
+		return currentStage;
+
+	}
 }
+

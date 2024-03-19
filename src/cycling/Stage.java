@@ -16,7 +16,7 @@ public class Stage {
     private LocalTime startTime;
     private String status;
     private Checkpoint[] checkpoints; 
-    private Rider[] participatingRiders;
+    private ArrayList<Rider> participatingRiders;
 
     public Stage(int raceID, String stageName, String stageDescription, double stageLength, LocalTime startTime, StageType stageType) {
         this.stageId = stageId++;
@@ -133,28 +133,27 @@ public class Stage {
         return status;
     }
     public void addParticipatingRider(Rider rider) {
-        Rider[] newRiders = new Rider[participatingRiders.length + 1];
-        for (int i = 0; i < participatingRiders.length; i++) {
-            newRiders[i] = participatingRiders[i];
-        }
-        newRiders[participatingRiders.length] = rider;
-        participatingRiders = newRiders;
+        participatingRiders.add(rider);
+        Comparator<Rider> comparator = Comparator.comparing(r -> r.getRiderResultsInStage(stageId)[r.getRiderResultsInStage(stageId).length-1]);
+        participatingRiders.sort(comparator);
+        
+
     }
     public int[] getRiderPoints() {
-        int[] outArray = new int[participatingRiders.length];
-        for (int i = 0; i < participatingRiders.length; i++) {
-            outArray[i] = participatingRiders[i].getRiderStagePoints(stageId);        
+        int[] outArray = new int[participatingRiders.size()];
+        for (int i = 0; i < participatingRiders.size(); i++) {
+            outArray[i] = participatingRiders.get(i).getRiderStagePoints(stageId);        
         }
         return outArray;
     }
     public int[] getRiderMountainPoints() {
-        int[] outArray = new int[participatingRiders.length];
-        for (int i = 0; i < participatingRiders.length; i++) {
-            outArray[i] = participatingRiders[i].getMountainPoints();        
+        int[] outArray = new int[participatingRiders.size()];
+        for (int i = 0; i < participatingRiders.size(); i++) {
+            outArray[i] = participatingRiders.get(i).getMountainPoints();        
         }
         return outArray;
     }
     public Rider[] getParticipatingRiders() {
-        return participatingRiders;
+        return participatingRiders.toArray(new Rider[0]);
     }
 }

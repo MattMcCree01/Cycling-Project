@@ -36,7 +36,7 @@ public class stageResults {
         this.stageMountainPoints = stageMountainPoints;
     }
     public LocalTime getStageTime() {
-        LocalTime finishtime = results[-1];
+        LocalTime finishtime = results[results.length-1];
         LocalTime starttime = results[0];
         LocalTime stageTime = finishtime.minusHours(starttime.getHour()).minusMinutes(starttime.getMinute()).minusSeconds(starttime.getSecond());
         elapsedTime = stageTime;

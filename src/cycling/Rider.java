@@ -94,6 +94,25 @@ public class Rider {
         }
         return 0;
     }
+    public LocalTime getRiderCheckpointTime(int checkpointId) {
+        for (stageResults stageResults : stageResults) {
+            for (LocalTime time : stageResults.getResults()) {
+                if (time != null) {
+                    return time;
+                }
+            }
+        }
+        return null;
+    }
+    public void addStageMountainPoints(int stageId, int points) {
+        for (stageResults stageResults : stageResults) {
+            if (stageResults.getStageId() == stageId) {
+                stageResults.setStageMountainPoints(points);
+                
+            }
+        }
+        
+    }
 
 
 }
