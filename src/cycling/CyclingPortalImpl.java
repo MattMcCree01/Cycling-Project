@@ -111,12 +111,13 @@ public class CyclingPortalImpl implements CyclingPortal {
 			throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
 		Race foundRace = null;
 		for (Race race : races) {
-			if (!(race.getRaceId() == (raceId))) {
-				throw new IDNotRecognisedException("Race Id doesn't exist");
-			}
-			else{
+			if (race.getRaceId() == (raceId)) {
 				foundRace = race;
-				}
+			}
+		if (foundRace == null) {
+				throw new IDNotRecognisedException("Race Id doesn't exist");
+		}
+			
 		}
 		if (length < 5) {
 			throw new InvalidLengthException("Stage must be more than 5km");
@@ -147,15 +148,13 @@ public class CyclingPortalImpl implements CyclingPortal {
 	public int[] getRaceStages(int raceId) throws IDNotRecognisedException {
 		Race foundRace = null;
 		for (Race race : races) {
-			if (!(race.getRaceId() == (raceId))) {
-				throw new IDNotRecognisedException("Race Id doesn't exist");
-			}
-			else{
+			if (race.getRaceId() == (raceId)) {
 				foundRace = race;
-				}
+			}
 		}
-		
-		 
+		if (foundRace == null) {
+			throw new IDNotRecognisedException("Race Id doesn't exist");
+		}
 		return foundRace.getStageIds();
 	}
 
@@ -308,6 +307,11 @@ public class CyclingPortalImpl implements CyclingPortal {
 		boolean found = false;
 		for (int i = 0; i < teams.size(); i++) {
 			if (teams.get(i).getTeamId() == teamId) {
+				for (Rider rider : riders) {
+					if (rider.getTeamId() == teamId) {
+						rider.setTeamId(0); // Set the current rider's team to 0 ('no team' team)
+					}
+				}
 				teams.remove(i);
 				found = true;
 				break;

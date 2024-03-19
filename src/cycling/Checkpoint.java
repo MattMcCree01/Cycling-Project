@@ -6,7 +6,8 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class Checkpoint {
-    private int checkpointID = 0;
+    private static int checkpointIDcounter = 0;
+    private int checkpointID;
     private int stageID;
     private Double location;
     private CheckpointType type;
@@ -17,7 +18,7 @@ public class Checkpoint {
 
 
     public Checkpoint(int stageId, Double location, CheckpointType type, Double averageGradient, Double length){
-        this.checkpointID = checkpointID++;
+        this.checkpointID = checkpointIDcounter++;
         this.stageID = stageId;
         this.location = location;
         this.type = type;
@@ -66,7 +67,7 @@ public class Checkpoint {
 
     }
     public Checkpoint(int stageId, Double location){
-        this.checkpointID = checkpointID++;
+        this.checkpointID = checkpointIDcounter++;
         this.stageID = stageId;
         this.location = location;
         this.type = CheckpointType.SPRINT;

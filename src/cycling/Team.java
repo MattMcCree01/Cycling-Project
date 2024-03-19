@@ -6,7 +6,7 @@ public class Team {
     private int teamID;
     private String teamName;
     private String description;
-    private static int nextID = 1;// no team can have id 0
+    private static int nextID = 1;
       // Is this correct?
 
     public Team(String teamName, String description) {

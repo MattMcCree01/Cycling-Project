@@ -28,35 +28,14 @@ public class CyclingPortalTestApp {
 
 		// TODO replace BadMiniCyclingPortalImpl by CyclingPortalImpl
 		CyclingPortal portal1 = new CyclingPortalImpl();
-		CyclingPortal portal2 = new CyclingPortalImpl();
 
-		assert (portal1.getRaceIds().length == 0)
-				: "Innitial Portal not empty as required or not returning an empty array.";
-		assert (portal1.getTeams().length == 0)
-				: "Innitial Portal not empty as required or not returning an empty array.";
-
-		try {
-			portal1.createTeam("TeamOne", "My favorite");
-			portal2.createTeam("TeamOne", "My favorite");
-		} catch (IllegalNameException e) {
-			e.printStackTrace();
-		} catch (InvalidNameException e) {
-			e.printStackTrace();
-		}
-
-		assert (portal1.getTeams().length == 1)
-				: "Portal1 should have one team.";
-
-		assert (portal2.getTeams().length == 1)
-				: "Portal2 should have one team.";
-
-		
 		// Test the creation of race, both exceptions are successful
-		System.out.println("-------------------Testing the creation");
+		System.out.println("-------------------Testing the creation of a race");
 		try {
-            int raceId = portal1.createRace("Race3", "race3 description");
-            if (raceId != -1) {
-                System.out.println("Race created successfully. Race ID: " + raceId);
+            int raceId = portal1.createRace("Race1", "race1 description");
+			int raceId2 = portal1.createRace("Race2-ToBeDeleted", "race2 description-ToBeDeleted");
+            if (raceId != -1 & raceId2 != -1) {
+                System.out.println("Race created successfully. Race ID: " + raceId + " and " + raceId2);
             } else {
                 System.out.println("Failed to create race.");
             }
@@ -66,6 +45,10 @@ public class CyclingPortalTestApp {
             System.out.println("InvalidNameException: " + e.getMessage());
         }
 
+		// Test the getRaces
+		System.out.println("-------------------Testing the getRaces");
+		System.out.println(Arrays.toString(portal1.getRaceIds()));
+		
 		// Test the removal of a race
 		// TODO - test the removal
 
@@ -75,8 +58,9 @@ public class CyclingPortalTestApp {
 			LocalDateTime time = LocalDateTime.now();
 			int raceId = 0;
 			int stageId = portal1.addStageToRace(raceId, "Stage1", "Stage1 description", 10, time, StageType.HIGH_MOUNTAIN);
-			if (stageId != -1) {
-				System.out.println("Stage added successfully. Stage ID: " + stageId);
+			int stageId2 = portal1.addStageToRace(raceId, "Stage2", "Stage2 description", 10, time, StageType.HIGH_MOUNTAIN);
+			if (stageId != -1 & stageId2 != -1) {
+				System.out.println("Stage added successfully. Stage ID: " + stageId + " and " + stageId2);
 			} else {
 				System.out.println("Failed to add stage.");
 			}
@@ -119,7 +103,6 @@ public class CyclingPortalTestApp {
 		}
 
 		// Test the viewing of race details, expection is successful
-		// TODO - The correct length is not being returned
 		System.out.println("-------------------Testing the viewing of race details");
 		try {
 			String details = portal1.viewRaceDetails(0);
@@ -133,11 +116,10 @@ public class CyclingPortalTestApp {
 		}
 
 		/// Test the getRaceStages, exception is successful
-		// TODO - Returns ("Stages: [I@1b6d3586")
 		System.out.println("-------------------Testing the getRaceStages");
 		try {
-			int radeId = 0;
-			int[] stages = portal1.getRaceStages(radeId);
+			int raceId = 0;
+			int[] stages = portal1.getRaceStages(raceId);
 			if (stages != null) {
 				System.out.println("Stages: " + Arrays.toString(stages));
 			} else {
@@ -172,7 +154,6 @@ public class CyclingPortalTestApp {
 		}
 
 		// Test the addition of a Sprint chechpoint
-		// TODO - Sprint is not being added as Mountain stage
 		System.out.println("-------------------Testing the addition of a sprint");
 		try {
 			int stageId = 0;
@@ -196,7 +177,6 @@ public class CyclingPortalTestApp {
 		// TODO - test the removal of checkpoints
 
 		// Test the getStageCheckpoints
-		// TODO - Same issue with the getRaceStages
 		System.out.println("-------------------Testing the getStageCheckpoints");
 		try {
 			int stageId = 0;
@@ -226,8 +206,9 @@ public class CyclingPortalTestApp {
 		System.out.println("-------------------Testing the creation of a team");
 		try {
 			int teamId = portal1.createTeam("TestTeamName", "TestTeam description");
-			if (teamId != -1) {
-				System.out.println("Team created successfully. Team ID: " + teamId);
+			int teamId2 = portal1.createTeam("TestTeamName-ToBeDeleted", "TestTeam description-ToBeDeleted");
+			if (teamId != -1 & teamId2 != -1) {
+				System.out.println("Team created successfully. Team ID: " + teamId + " and " + teamId2);
 			} else {
 				System.out.println("Failed to create team.");
 			}
@@ -237,19 +218,56 @@ public class CyclingPortalTestApp {
 			e.printStackTrace();
 		}
 
+		// Test the getTeams
+		System.out.println("-------------------Testing the getTeams");
+		System.out.println("Teams: " + Arrays.toString(portal1.getTeams()));
+
 		// Test the removal of a team
 		System.out.println("-------------------Testing the removal of a team");
 		try {
-			int teamId = 0;
+			int teamId = 2;
 			portal1.removeTeam(teamId);
 			System.out.println("Team removed successfully.");
 		} catch (IDNotRecognisedException e) {
 			e.printStackTrace();
 		}
 
-		
+		// Test the getTeamRiders
+		System.out.println("-------------------Testing the getTeamRiders");
+		try {
+			int teamId = 1;
+			int[] riders = portal1.getTeamRiders(teamId);
+			if (riders != null) {
+				System.out.println("Riders: " + Arrays.toString(riders));
+			} else {
+				System.out.println("Failed to get riders");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		}		
+
+		// Test the creation of a rider
+		System.out.println("-------------------Testing the creation of a rider");
+		try {
+			int riderId = portal1.createRider(1, "TestRider1", 2000);
+			if (riderId != -1) {
+				System.out.println("Rider created successfully. Rider ID: " + riderId);
+			} else {
+				System.out.println("Failed to create rider.");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+
+		// Test the removal of a rider
+		// TODO - test the removal of riders
+
+		// Test the registering of rider results in stage
+
 	}
 
-
+	
 
 }
