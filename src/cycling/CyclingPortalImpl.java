@@ -452,11 +452,13 @@ public class CyclingPortalImpl implements CyclingPortal {
 		Checkpoint[] currentCheckpoints = currentStage.getCheckpoints(); 
 		for (int i = 0; i < checkpoints.length; i++) {
 			currentCheckpoints[i].addRiderToRank(currentRider, checkpoints[i]);
+			currentCheckpoints[i].updateMountainPoints();
+			currentCheckpoints[i].updateSprintPoints();
 		}
 		
 		
 
-		//TODO add points to rider, and adjust other riders points based on new results
+		
 	}
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {

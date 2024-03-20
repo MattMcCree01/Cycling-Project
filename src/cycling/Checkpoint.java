@@ -108,12 +108,27 @@ public class Checkpoint {
         
             
         }
-        
+        if(type != CheckpointType.SPRINT){
+            updateMountainPoints();
+        }
+        else{
+            updateSprintPoints();
+        }        
     }
     public void updateMountainPoints(){
         for (Rider rider : RiderPointsRankInCheckpoint) {
             try{
             rider.addStageMountainPoints(stageID, PointsPerPosition.get(RiderPointsRankInCheckpoint.indexOf(rider)));
+            }
+            finally{;
+            }
+            
+        }
+    }
+    public void updateSprintPoints(){
+        for (Rider rider : RiderPointsRankInCheckpoint) {
+            try{
+            rider.addStageSprintPoints(stageID, PointsPerPosition.get(RiderPointsRankInCheckpoint.indexOf(rider)));
             }
             finally{;
             }
