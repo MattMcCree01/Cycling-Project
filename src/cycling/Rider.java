@@ -26,7 +26,7 @@ public class Rider {
         return teamID;
     }
     public stageResults[] getStageResults() {
-        return stageResults.toArray(new stageResults[0]);
+        return stageResults.toArray(new stageResults[stageResults.size()-1]);
     }
     public void removeRider(int riderId) {
         

@@ -619,7 +619,18 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int[] getRidersPointsInRace(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+		Race currentRace = getRaceById(raceId);
+		Stage[] stages = currentRace.loadStages();
+		for (Stage stage : stages) {
+			Rider[] riders = stage.getParticipatingRiders();
+			for (Rider rider : riders) {
+				
+				int points = rider.getRacePoints(raceId);
+				points
+				
+			}
+		}
+
 		return null;
 	}
 
@@ -658,6 +669,16 @@ public class CyclingPortalImpl implements CyclingPortal {
 		}
 		return currentStage;
 
+	}
+	public Race getRaceById(int raceId){
+		Race currentRace = null;
+		for (Race race : races) {
+			if(race.getRaceId() == raceId) {
+				currentRace = race;
+				return currentRace;
+			
+		}
+		return null;
 	}
 }
 
