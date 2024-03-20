@@ -563,7 +563,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 			throw new IDNotRecognisedException("ID not recognised");
 		}
 		return currentStage.getRiderPoints();
-	}
+	}//TODO check ir ordered correctly
 		
 
 	@Override

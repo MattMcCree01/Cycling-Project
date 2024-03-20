@@ -155,6 +155,6 @@ public class Stage {
         return outArray;
     }
     public Rider[] getParticipatingRiders() {
-        return participatingRiders.toArray(new Rider[participatingRiders.size()-1]);
+        return participatingRiders.toArray(new Rider[participatingRiders.size()]);
     }
 }
