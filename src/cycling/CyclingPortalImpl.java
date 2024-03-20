@@ -421,7 +421,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 		}
 		if (!riderIdCheck) {
 			throw new IDNotRecognisedException("ID not recognised");
-	}
+		}
 		//check for duplicated results
 		for (Rider rider : riders) {
 			if (rider.getRiderId() == riderId) {
