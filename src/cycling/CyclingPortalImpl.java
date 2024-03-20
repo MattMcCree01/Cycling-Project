@@ -439,7 +439,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 			}
 		}
 		//check there are 2 more times in results than the number of checkpoints
-		if (checkpoints.length != 2 * currentRider.getStageResults().length) {
+		if (checkpoints.length != currentStage.getCheckpoints().length + 2) {
 			throw new InvalidCheckpointTimesException("Invalid checkpoint times");
 		}
 		if (currentStage.getStageStatus() != "waiting for results") {
@@ -450,10 +450,10 @@ public class CyclingPortalImpl implements CyclingPortal {
 		currentStage.addParticipatingRider(currentRider);
 
 		Checkpoint[] currentCheckpoints = currentStage.getCheckpoints(); 
-		for (int i = 0; i < checkpoints.length; i++) {
-			currentCheckpoints[i].addRiderToRank(currentRider, checkpoints[i]);
-			currentCheckpoints[i].updateMountainPoints();
-			currentCheckpoints[i].updateSprintPoints();
+		for (int i = 1; i < checkpoints.length - 1; i++) {
+			currentCheckpoints[i-1].addRiderToRank(currentRider, checkpoints[i]);
+			currentCheckpoints[i-1].updateMountainPoints();
+			currentCheckpoints[i-1].updateSprintPoints();
 		}
 		
 		
@@ -676,7 +676,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 			if(race.getRaceId() == raceId) {
 				currentRace = race;
 				return currentRace;
-			
+			}
 		}
 		return null;
 	}

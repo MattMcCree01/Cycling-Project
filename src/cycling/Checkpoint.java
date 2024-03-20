@@ -6,6 +6,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class Checkpoint {
+    private static final int Null = 0;
     private static int checkpointIDcounter = 0;
     private int checkpointID;
     private int stageID;
@@ -118,8 +119,12 @@ public class Checkpoint {
     public void updateMountainPoints(){
         for (Rider rider : RiderPointsRankInCheckpoint) {
             try{
-            rider.addStageMountainPoints(stageID, PointsPerPosition.get(RiderPointsRankInCheckpoint.indexOf(rider)));
-            }
+                Integer assignedPoints = PointsPerPosition.get(RiderPointsRankInCheckpoint.indexOf(rider));
+                if (assignedPoints == null){
+                    assignedPoints = 0;
+                }
+                rider.addStageMountainPoints(stageID, assignedPoints);
+                }
             finally{;
             }
             
@@ -128,8 +133,12 @@ public class Checkpoint {
     public void updateSprintPoints(){
         for (Rider rider : RiderPointsRankInCheckpoint) {
             try{
-            rider.addStageSprintPoints(stageID, PointsPerPosition.get(RiderPointsRankInCheckpoint.indexOf(rider)));
-            }
+                Integer assignedPoints = PointsPerPosition.get(RiderPointsRankInCheckpoint.indexOf(rider));
+                if (assignedPoints == null){
+                    assignedPoints = 0;
+                }
+                rider.addStageSprintPoints(stageID, assignedPoints);
+                }
             finally{;
             }
             

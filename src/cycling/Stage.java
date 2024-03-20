@@ -29,6 +29,7 @@ public class Stage {
         this.status = "preparation";
         this.startTime = startTime;
         this.checkpoints = new Checkpoint[0];
+        this.participatingRiders = new ArrayList<Rider>();
     }
     
     public int getStageId() {

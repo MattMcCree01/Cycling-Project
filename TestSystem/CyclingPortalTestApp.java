@@ -253,6 +253,7 @@ public class CyclingPortalTestApp {
 		System.out.println("-------------------Testing the creation of a rider");
 		try {
 			int riderId = portal1.createRider(1, "TestRider1", 2000);
+			int riderId2 = portal1.createRider(1, "Test", 1990);
 			if (riderId != -1) {
 				System.out.println("Rider created successfully. Rider ID: " + riderId);
 			} else {
@@ -297,6 +298,44 @@ public class CyclingPortalTestApp {
 		try {
 			int stageId = 0;
 			int riderId = 0;
+			LocalTime[] results = portal1.getRiderResultsInStage(stageId, riderId);
+			if (results != null) {
+				System.out.println("Results: " + Arrays.toString(results));
+			} else {
+				System.out.println("Failed to get results");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		}
+
+		try{
+			int stageId = 0;
+			int riderId = 1;
+			LocalTime[] times = new LocalTime[7];
+			times[0] = LocalTime.of(9, 0);
+			times[1] = LocalTime.of(9, 10);
+			times[2] = LocalTime.of(9, 20);
+			times[3] = LocalTime.of(9, 40);
+			times[4] = LocalTime.of(10, 5);
+			times[5] = LocalTime.of(10, 10);
+			times[6] = LocalTime.of(10, 25);
+
+			portal1.registerRiderResultsInStage(stageId, riderId, times);
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		} catch (DuplicatedResultException e) {
+			e.printStackTrace();
+		} catch (InvalidCheckpointTimesException e) {
+			e.printStackTrace();
+		} catch (InvalidStageStateException e) {
+			e.printStackTrace();
+		}
+
+		// Test the getStageResults
+		System.out.println("-------------------Testing the getStageResults");
+		try {
+			int stageId = 0;
+			int riderId = 1;
 			LocalTime[] results = portal1.getRiderResultsInStage(stageId, riderId);
 			if (results != null) {
 				System.out.println("Results: " + Arrays.toString(results));
