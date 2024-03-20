@@ -25,9 +25,6 @@ public class Rider {
     public int getTeamId() {
         return teamID;
     }
-    public void setTeamId(int newTeamId) {
-        this.teamID = newTeamId;
-    }
     public stageResults[] getStageResults() {
         return stageResults.toArray(new stageResults[0]);
     }
@@ -114,8 +111,19 @@ public class Rider {
                 stageResults.setStageMountainPoints(points);
                 
             }
-        }
-        
+
+        }        
+    }
+    public void addStageSprintPoints(int stageId, int points) {
+        for (stageResults stageResults : stageResults) {
+            if (stageResults.getStageId() == stageId) {
+                stageResults.setStageSprintPoints(points);
+                
+            }
+        }        
+    }
+    public void setTeamId(int teamId) {
+        this.teamID = teamId;
     }
 
 
