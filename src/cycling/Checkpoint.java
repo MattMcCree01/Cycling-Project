@@ -91,7 +91,13 @@ public class Checkpoint {
         this.PointsPerPosition.put(14,1);
     }
     public int getCheckpointID() {
-        return checkpointID;
+            return checkpointID;
+    }
+    public CheckpointType getType() {
+        return type;
+    }
+    public Dictionary<Integer, Integer> getPointsPerPosition() {
+        return PointsPerPosition;
     }
     public void addRiderToRank(Rider inpRider, LocalTime inpTime){
         Boolean check = false;

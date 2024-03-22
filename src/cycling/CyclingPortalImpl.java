@@ -449,16 +449,6 @@ public class CyclingPortalImpl implements CyclingPortal {
 		currentRider.registerRiderResultsInStage(stageId, checkpoints);
 		currentStage.addParticipatingRider(currentRider);
 
-		Checkpoint[] currentCheckpoints = currentStage.getCheckpoints(); 
-		for (int i = 1; i < checkpoints.length - 1; i++) {
-			currentCheckpoints[i-1].addRiderToRank(currentRider, checkpoints[i]);
-			currentCheckpoints[i-1].updateMountainPoints();
-			currentCheckpoints[i-1].updateSprintPoints();
-		}
-		
-		
-
-		
 	}
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
@@ -562,6 +552,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 		if (!stageIdCheck) {
 			throw new IDNotRecognisedException("ID not recognised");
 		}
+		currentStage.updateStagePoints();
 		return currentStage.getRiderPoints();
 	}//TODO check ir ordered correctly
 		
@@ -583,7 +574,9 @@ public class CyclingPortalImpl implements CyclingPortal {
 		if (!stageIdCheck) {
 			throw new IDNotRecognisedException("ID not recognised");
 		}
-		return currentStage.getRiderMountainPoints();
+		currentStage.updateStageMountainMountainpoints();
+		// TODO - Think order may be inverted?
+		return currentStage.getRiderStageMountainPoints();
 	}
 	
 

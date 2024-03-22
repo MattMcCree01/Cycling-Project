@@ -335,9 +335,20 @@ public class CyclingPortalTestAppRace {
 		} catch (InvalidStageStateException e) {
 			e.printStackTrace();
 		}
-
+        
         // Get Mountain points
-        System.out.println("Mountain points:");
+        System.out.println("Mountain points for stage 2 and 3:");
+        try {
+            int [] RiderMountainPoints = portal.getRidersMountainPointsInStage(1);
+            if (RiderMountainPoints != null) {
+                System.out.println("Results: " + Arrays.toString(RiderMountainPoints));
+            } else {
+                System.out.println("Failed to get mountain points.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
+
         try {
             int [] RiderMountainPoints = portal.getRidersMountainPointsInStage(2);
             if (RiderMountainPoints != null) {
@@ -349,6 +360,16 @@ public class CyclingPortalTestAppRace {
             e.printStackTrace();
         }
 
-
+        System.out.println("Points for stage 1: ");
+        try {
+            int [] RiderPoints = portal.getRidersPointsInStage(0);
+            if (RiderPoints != null) {
+                System.out.println("Results: " + Arrays.toString(RiderPoints));
+            } else {
+                System.out.println("Failed to get points.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
     }
 }

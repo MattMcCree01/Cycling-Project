@@ -32,8 +32,14 @@ public class stageResults {
     public void setStageSprintPoints(int stagePoints) {
         this.stageSprintPoints = stagePoints;
     }
-    public void setStageMountainPoints(int stageMountainPoints) {
-        this.stageMountainPoints = stageMountainPoints;
+    public void setStageMountainPoints(int points) {
+        this.stageMountainPoints = points;
+    }
+    public void addStageMountainPoints(int points) {
+        this.stageMountainPoints += points;
+    }
+    public void addStageSprintPoints(int points) {
+        this.stageSprintPoints += points;
     }
     public LocalTime getStageTime() {
         LocalTime finishtime = results[results.length-1];

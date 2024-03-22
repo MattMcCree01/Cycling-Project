@@ -28,6 +28,28 @@ public class Rider {
     public stageResults[] getStageResults() {
         return stageResults.toArray(new stageResults[stageResults.size()]);
     }
+    public LocalTime[] getSpecificStageResults(int stageId) {
+        for (stageResults stageResult : stageResults) {
+            if (stageResult.getStageId() == stageId) {
+                return stageResult.getResults();
+            }
+        }
+        return null;
+    }
+    public void setRiderMountainPoints(int stageId, int points) {
+        for (stageResults stageResult : stageResults) {
+            if (stageResult.getStageId() == stageId) {
+                stageResult.setStageMountainPoints(points);
+            }
+        }
+    }
+    public void setRiderSprintStagePoints(int stageId, int points) {
+        for (stageResults stageResult : stageResults) {
+            if (stageResult.getStageId() == stageId) {
+                stageResult.setStageSprintPoints(points);
+            }
+        }
+    }
     public void removeRider(int riderId) {
         
     }
@@ -63,9 +85,16 @@ public class Rider {
         int points = 0;
         for (stageResults stageResults : stageResults) {
             points += stageResults.getStageMountainPoints();
-
         }
         return points;
+    }
+    public int getStageMountainPoints(int stageId) {
+        for (stageResults stageResults : stageResults) {
+            if (stageResults.getStageId() == stageId) {
+                return stageResults.getStageMountainPoints();
+            }
+        }
+        return 0;
     }
     public LocalTime getElapsedTime() {
         LocalTime elapsedTime = LocalTime.of(0, 0, 0);
@@ -108,16 +137,14 @@ public class Rider {
     public void addStageMountainPoints(int stageId, int points) {
         for (stageResults stageResults : stageResults) {
             if (stageResults.getStageId() == stageId) {
-                stageResults.setStageMountainPoints(points);
-                
+                stageResults.addStageMountainPoints(points);
             }
-
         }        
     }
     public void addStageSprintPoints(int stageId, int points) {
         for (stageResults stageResults : stageResults) {
             if (stageResults.getStageId() == stageId) {
-                stageResults.setStageSprintPoints(points);
+                stageResults.addStageSprintPoints(points);
                 
             }
         }        

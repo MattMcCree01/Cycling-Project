@@ -3,7 +3,13 @@ package cycling;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.TreeMap;
+import java.util.Map;
 
 
 public class Stage {
@@ -155,7 +161,236 @@ public class Stage {
         }
         return outArray;
     }
+    public int[] getRiderStageMountainPoints() {
+        int[] outArray = new int[participatingRiders.size()];
+        for (int i = 0; i < participatingRiders.size(); i++) {
+            outArray[i] = participatingRiders.get(i).getStageMountainPoints(stageId);        
+        }
+        return outArray;
+    }
     public Rider[] getParticipatingRiders() {
         return participatingRiders.toArray(new Rider[participatingRiders.size()]);
+    }
+
+    // Trialing new update mountain points
+    public void updateStageMountainMountainpoints() {
+        int checkpointCount = 0;
+
+        // set all participating riders to 0 mountain points
+        for (Rider rider : participatingRiders) {
+            rider.setRiderMountainPoints(stageId, 0);
+        }
+
+        // Loop iterating over checkpoints
+        for (Checkpoint checkpoint : this.checkpoints) {
+            if (checkpoint.getType() != CheckpointType.SPRINT) {
+                // Creating a new map for each checkpoint to store rider checkpoint times
+                Map<Integer, LocalTime> riderCheckpointTimes = new HashMap<>();
+                
+                // Loop iterating over participating riders for each checkpoint
+                for (Rider rider : participatingRiders) {
+                    // Fetching rider's checkpoint times for the current checkpoint
+                    LocalTime[] result = rider.getSpecificStageResults(this.stageId);
+                    LocalTime checkpointTime = result[checkpointCount];
+                    riderCheckpointTimes.put(rider.getRiderId(), checkpointTime);
+                }
+
+                // Convert HashMap to TreeMap with custom comparator to sort by checkpoint time
+                TreeMap<Integer, LocalTime> sortedMap = new TreeMap<>(new Comparator<Integer>() {
+                    @Override
+                    public int compare(Integer riderId1, Integer riderId2) {
+                        LocalTime time1 = riderCheckpointTimes.get(riderId1);
+                        LocalTime time2 = riderCheckpointTimes.get(riderId2);
+                        return time1.compareTo(time2);
+                    }
+                });
+
+                sortedMap.putAll(riderCheckpointTimes);
+                Dictionary<Integer, Integer> pointsMap = checkpoint.getPointsPerPosition();
+                
+                for (Map.Entry<Integer, LocalTime> entry : sortedMap.entrySet()) {
+                    int riderId = entry.getKey();
+                    int position = sortedMap.headMap(riderId).size();
+                    // Check if position exists in pointsMap
+                    Integer points = pointsMap.get(position);
+                    
+                    if (points == null) {
+                        points = 0; // Assign 0 points if position doesn't exist in pointsMap
+                    }
+
+                    Rider rider = null;
+                    for (Rider r : participatingRiders) {
+                        if (r.getRiderId() == riderId) {
+                            rider = r;
+                            break;
+                        }
+                    }
+                    rider.addStageMountainPoints(this.stageId, points);
+                }
+            }
+            checkpointCount++;
+        }
+    }
+
+    // New update stage points
+    // TODO - adding points to wrong riders??
+    public void updateStagePoints() {
+        int checkpointCount = 0;
+
+        // set all participating riders to 0 stage points
+        for (Rider rider : participatingRiders) {
+            rider.setRiderSprintStagePoints(stageId, 0);
+        }
+        
+        // TODO - Change for each type of stage
+        
+        Map<Integer, LocalTime> riderFinishTimes = new HashMap<>();
+
+        for (Rider rider : participatingRiders) {
+            LocalTime[] result = rider.getSpecificStageResults(this.stageId);
+            LocalTime finishTime = result[result.length - 1]; 
+            riderFinishTimes.put(rider.getRiderId(), finishTime);
+        }
+
+        // Convert HashMap to TreeMap with custom comparator to sort by checkpoint time
+        TreeMap<Integer, LocalTime> sortedMap = new TreeMap<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer riderId1, Integer riderId2) {
+                LocalTime time1 = riderFinishTimes.get(riderId1);
+                LocalTime time2 = riderFinishTimes.get(riderId2);
+                return time1.compareTo(time2);
+            }
+        });
+
+        sortedMap.putAll(riderFinishTimes);
+        Dictionary<Integer, Integer> pointsMap = new Hashtable<>();
+        switch(this.stageType) {
+            case TT:
+            case HIGH_MOUNTAIN:
+                pointsMap.put(0, 20);
+                pointsMap.put(1, 17);
+                pointsMap.put(2, 15);
+                pointsMap.put(3, 13);
+                pointsMap.put(4, 11);
+                pointsMap.put(5, 10);
+                pointsMap.put(6, 9);
+                pointsMap.put(7, 8);
+                pointsMap.put(8, 7);
+                pointsMap.put(9, 6);
+                pointsMap.put(10, 5);
+                pointsMap.put(11, 4);
+                pointsMap.put(12, 3);
+                pointsMap.put(13, 2);
+                pointsMap.put(14, 1);
+                break;
+            case FLAT:
+                pointsMap.put(0, 50);
+                pointsMap.put(1, 30);
+                pointsMap.put(2, 20);
+                pointsMap.put(3, 18);
+                pointsMap.put(4, 16);
+                pointsMap.put(5, 14);
+                pointsMap.put(6, 12);
+                pointsMap.put(7, 10);
+                pointsMap.put(8, 8);
+                pointsMap.put(9, 7);
+                pointsMap.put(10, 6);
+                pointsMap.put(11, 5);
+                pointsMap.put(12, 4);
+                pointsMap.put(13, 3);
+                pointsMap.put(14, 2);
+                break;
+            case MEDIUM_MOUNTAIN:
+                pointsMap.put(0, 30);
+                pointsMap.put(1, 25);
+                pointsMap.put(2, 22);
+                pointsMap.put(3, 19);
+                pointsMap.put(4, 17);
+                pointsMap.put(5, 15);
+                pointsMap.put(6, 13);
+                pointsMap.put(7, 11);
+                pointsMap.put(8, 9);
+                pointsMap.put(9, 7);
+                pointsMap.put(10, 6);
+                pointsMap.put(11, 5);
+                pointsMap.put(12, 4);
+                pointsMap.put(13, 3);
+                pointsMap.put(14, 2);
+                break;
+            default:
+                break;
+        }
+
+            for (Map.Entry<Integer, LocalTime> entry : sortedMap.entrySet()) {
+                int riderId = entry.getKey();
+                int position = sortedMap.headMap(riderId).size();
+                // Check if position exists in pointsMap
+                Integer points = pointsMap.get(position);
+                
+                if (points == null) {
+                    points = 0; // Assign 0 points if position doesn't exist in pointsMap
+                }
+
+                Rider rider = null;
+                for (Rider r : participatingRiders) {
+                    if (r.getRiderId() == riderId) {
+                        rider = r;
+                        break;
+                    }
+                }
+                rider.addStageSprintPoints(this.stageId, points);
+            }
+        
+        
+        for (Checkpoint checkpoint : this.checkpoints) {
+            if (checkpoint.getType() == CheckpointType.SPRINT) {
+                // Creating a new map for each checkpoint to store rider checkpoint times
+                Map<Integer, LocalTime> riderCheckpointTimes = new HashMap<>();
+                
+                // Loop iterating over participating riders for each checkpoint
+                for (Rider rider : participatingRiders) {
+                    // Fetching rider's checkpoint times for the current checkpoint
+                    LocalTime[] result = rider.getSpecificStageResults(this.stageId);
+                    LocalTime checkpointTime = result[checkpointCount];
+                    riderCheckpointTimes.put(rider.getRiderId(), checkpointTime);
+                }
+
+                // Convert HashMap to TreeMap with custom comparator to sort by checkpoint time
+                TreeMap<Integer, LocalTime> checkpointSortedMap = new TreeMap<>(new Comparator<Integer>() {
+                    @Override
+                    public int compare(Integer riderId1, Integer riderId2) {
+                        LocalTime time1 = riderCheckpointTimes.get(riderId1);
+                        LocalTime time2 = riderCheckpointTimes.get(riderId2);
+                        return time1.compareTo(time2);
+                    }
+                });
+
+                checkpointSortedMap.putAll(riderCheckpointTimes);
+                Dictionary<Integer, Integer> checkpointPointsMap = checkpoint.getPointsPerPosition();
+                
+                for (Map.Entry<Integer, LocalTime> entry : checkpointSortedMap.entrySet()) {
+                    int riderId = entry.getKey();
+                    int position = checkpointSortedMap.headMap(riderId).size();
+                    // Check if position exists in pointsMap
+                    Integer points = checkpointPointsMap.get(position);
+                    
+                    if (points == null) {
+                        points = 0; // Assign 0 points if position doesn't exist in pointsMap
+                    }
+
+                    Rider rider = null;
+                    for (Rider r : participatingRiders) {
+                        if (r.getRiderId() == riderId) {
+                            rider = r;
+                            break;
+                        }
+                    }
+                    rider.addStageSprintPoints(this.stageId, points);
+                }
+            }
+            checkpointCount++;
+        }
+        
+
     }
 }
