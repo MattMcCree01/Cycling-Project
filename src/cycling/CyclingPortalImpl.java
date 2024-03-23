@@ -1,6 +1,10 @@
 package cycling;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -510,25 +514,17 @@ public class CyclingPortalImpl implements CyclingPortal {
 		if (!stageIdCheck) {
 			throw new IDNotRecognisedException("ID not recognised");
 		}
-		ArrayList<Rider> orderedRiders = new ArrayList<Rider>();
+
+		int[] riderIds = new int[currentStage.getParticipatingRiders().length];
+		int i = 0;
 		for (Rider rider : currentStage.getParticipatingRiders()) {
-			if (orderedRiders.size() == 0) {
-				orderedRiders.add(rider);
-			} else {
-				for (int i = 0; i < orderedRiders.size(); i++) {
-					if (rider.getStageElapsedTime(stageId).isBefore(orderedRiders.get(i).getStageElapsedTime(stageId))) {
-						orderedRiders.add(i, rider);
-						break;
-					}
-				}
-				
-			}
+			riderIds[i] = rider.getRiderId();
+			i++;
 		}
 
-		return orderedRiders.stream().mapToInt(i -> i.getRiderId()).toArray();
-		
-			
-	}	
+		return riderIds;
+	}
+
 	@Override
 	public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId) throws IDNotRecognisedException {
 		// TODO Auto-generated method stub
@@ -554,8 +550,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 		}
 		currentStage.updateStagePoints();
 		return currentStage.getRiderPoints();
-	}//TODO check ir ordered correctly
-		
+	}	
 
 	@Override
 	public int[] getRidersMountainPointsInStage(int stageId) throws IDNotRecognisedException {
@@ -575,7 +570,6 @@ public class CyclingPortalImpl implements CyclingPortal {
 			throw new IDNotRecognisedException("ID not recognised");
 		}
 		currentStage.updateStageMountainMountainpoints();
-		// TODO - Think order may be inverted?
 		return currentStage.getRiderStageMountainPoints();
 	}
 	
@@ -588,14 +582,57 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void saveCyclingPortal(String filename) throws IOException {
-		// TODO Auto-generated method stub
+		ObjectOutputStream oos = null;
+		try {
+            // Create ObjectOutputStream to write objects into a file
+            oos = new ObjectOutputStream(new FileOutputStream(filename));
 
+            // Write the object (state of CyclingPortal) into the file
+            oos.writeObject(this);
+        } finally {
+            // Close the ObjectOutputStream in a finally block to ensure it always gets closed
+            if (oos != null) {
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    // Handle IOException while closing ObjectOutputStream
+                    System.err.println("Error closing ObjectOutputStream: " + e.getMessage());
+                }
+            }
+        }
 	}
 
 	@Override
 	public void loadCyclingPortal(String filename) throws IOException, ClassNotFoundException {
-		// TODO Auto-generated method stub
+		ObjectInputStream ois = null;
+        CyclingPortalImpl loadedPortal = null;
+        try {
+            // Create ObjectInputStream to read objects from the file
+            ois = new ObjectInputStream(new FileInputStream(filename));
 
+            // Read the object from the file
+            Object obj = ois.readObject();
+
+            // Check if the object is an instance of CyclingPortalImpl
+            if (obj instanceof CyclingPortalImpl) {
+                // Cast the object to CyclingPortalImpl
+                loadedPortal = (CyclingPortalImpl) obj;
+            } else {
+                throw new IOException("The loaded object is not an instance of CyclingPortal");
+            }
+        } catch (ClassNotFoundException e) {
+            throw e;
+		} finally {
+            // Close the ObjectInputStream in a finally block to ensure it always gets closed
+            if (ois != null) {
+                try {
+                    ois.close();
+                } catch (IOException e) {
+                    // Handle IOException while closing ObjectInputStream
+                    System.err.println("Error closing ObjectInputStream: " + e.getMessage());
+                }
+            }
+        }
 	}
 
 	@Override

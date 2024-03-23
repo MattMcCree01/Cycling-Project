@@ -1,8 +1,9 @@
 package cycling;
+import java.io.Serializable;
 import java.time.LocalTime;
 
 
-public class stageResults {
+public class stageResults implements Serializable{
     private int stageId;
     private LocalTime[] results;
     private int stageSprintPoints;

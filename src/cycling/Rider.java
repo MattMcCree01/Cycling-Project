@@ -1,8 +1,9 @@
 package cycling;
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class Rider {
+public class Rider implements Serializable{
     private static int idCounter = 0;
     private int id;
     private String name;

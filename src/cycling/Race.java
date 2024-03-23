@@ -1,9 +1,10 @@
 package cycling;
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Race {
+public class Race implements Serializable{
     private static int raceIdCounter = 0;
     private int raceId;
     private String raceName;

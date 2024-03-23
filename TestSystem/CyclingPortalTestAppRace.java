@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.io.IOException;
 
 import cycling.*;
 
@@ -336,8 +337,21 @@ public class CyclingPortalTestAppRace {
 			e.printStackTrace();
 		}
         
+        // Get results
+        System.out.println("Results for rider 1 in stage 2:");
+        try {
+            LocalTime[] RiderResults = portal.getRiderResultsInStage(1, 0);
+            if (RiderResults != null) {
+                System.out.println("Results: " + Arrays.toString(RiderResults));
+            } else {
+                System.out.println("Failed to get results.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
+
         // Get Mountain points
-        System.out.println("Mountain points for stage 2 and 3:");
+        System.out.println("Mountain points for stage 1, 2 and 3:");
         try {
             int [] RiderMountainPoints = portal.getRidersMountainPointsInStage(1);
             if (RiderMountainPoints != null) {
@@ -360,7 +374,8 @@ public class CyclingPortalTestAppRace {
             e.printStackTrace();
         }
 
-        System.out.println("Points for stage 1: ");
+        // Get stage points
+        System.out.println("Points for stage 1, 2 and 3: ");
         try {
             int [] RiderPoints = portal.getRidersPointsInStage(0);
             if (RiderPoints != null) {
@@ -369,6 +384,58 @@ public class CyclingPortalTestAppRace {
                 System.out.println("Failed to get points.");
             }
         } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            int [] RiderPoints = portal.getRidersPointsInStage(1);
+            if (RiderPoints != null) {
+                System.out.println("Results: " + Arrays.toString(RiderPoints));
+            } else {
+                System.out.println("Failed to get points.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            int [] RiderPoints = portal.getRidersPointsInStage(2);
+            if (RiderPoints != null) {
+                System.out.println("Results: " + Arrays.toString(RiderPoints));
+            } else {
+                System.out.println("Failed to get points.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
+
+        // Get riders rank in stage
+        System.out.println("Rank for stage 1:");
+        try {
+            int [] RiderRank = portal.getRidersRankInStage(2);
+            if (RiderRank != null) {
+                System.out.println("Results: " + Arrays.toString(RiderRank));
+            } else {
+                System.out.println("Failed to get rank.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
+
+        // Save and load portal
+        try {
+            portal.saveCyclingPortal("portal.ser");
+            System.out.println("Portal saved successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            portal.loadCyclingPortal("portal.ser");
+            System.out.println("Portal loaded successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

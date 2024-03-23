@@ -1,11 +1,12 @@
 package cycling;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-public class Checkpoint {
+public class Checkpoint implements Serializable{
     private static final int Null = 0;
     private static int checkpointIDcounter = 0;
     private int checkpointID;
