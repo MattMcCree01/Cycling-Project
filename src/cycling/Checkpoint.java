@@ -91,6 +91,9 @@ public class Checkpoint implements Serializable{
         this.PointsPerPosition.put(13,2);
         this.PointsPerPosition.put(14,1);
     }
+    public static void setCounter(int counter) {
+        checkpointIDcounter = counter;
+    }
     public int getCheckpointID() {
             return checkpointID;
     }

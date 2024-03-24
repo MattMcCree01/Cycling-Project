@@ -6,6 +6,14 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SavedCyclingPortals",
+            "request": "launch",
+            "mainClass": "SavedCyclingPortals",
+            "projectName": "Cycling-Project_14ab5efd",
+            "vmArgs": "-enableassertions"
+        },
+        {
+            "type": "java",
             "name": "CyclingPortalTestAppRace",
             "request": "launch",
             "mainClass": "CyclingPortalTestAppRace",

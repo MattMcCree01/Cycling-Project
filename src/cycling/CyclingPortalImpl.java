@@ -576,8 +576,15 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void eraseCyclingPortal() {
-		// TODO Auto-generated method stub
+		races.clear();
+		riders.clear();
+		teams.clear();		
 
+		Race.setCounter(0);
+		Team.setCounter(0);
+		Rider.setCounter(0);
+		Stage.setCounter(0);
+		Checkpoint.setCounter(0);
 	}
 
 	@Override
@@ -617,6 +624,31 @@ public class CyclingPortalImpl implements CyclingPortal {
             if (obj instanceof CyclingPortalImpl) {
                 // Cast the object to CyclingPortalImpl
                 loadedPortal = (CyclingPortalImpl) obj;
+				this.races = loadedPortal.races;
+				this.riders = loadedPortal.riders;
+				this.teams = loadedPortal.teams;
+
+				Race.setCounter(races.size());
+				Team.setCounter(teams.size());
+				Rider.setCounter(riders.size());
+
+				int stageCounter = 0;
+				for (Race race : races) {
+					for (Stage stage : race.loadStages()) {
+						stageCounter++;
+					}
+				}
+				Stage.setCounter(stageCounter);
+
+				int checkpointCounter = 0;
+				for (Race race : races) {
+					for (Stage stage : race.loadStages()) {
+						for (Checkpoint checkpoint : stage.getCheckpoints()) {
+							checkpointCounter++;
+						}
+					}
+				}
+				Checkpoint.setCounter(checkpointCounter);
             } else {
                 throw new IOException("The loaded object is not an instance of CyclingPortal");
             }

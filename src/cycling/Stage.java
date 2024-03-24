@@ -39,7 +39,9 @@ public class Stage implements Serializable{
         this.checkpoints = new Checkpoint[0];
         this.participatingRiders = new ArrayList<Rider>();
     }
-    
+    public static void setCounter(int counter) {
+        stageIdCounter = counter;
+    }
     public int getStageId() {
         return stageId;
     }

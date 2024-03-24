@@ -15,7 +15,13 @@ public class Team implements Serializable{
         this.description = description;
         
     }
-
+    public static void setCounter(int counter) {
+        if (counter == 0) {
+            nextID = 1;
+        } else {
+            nextID = counter + 1;
+        }
+    }
     public int getTeamId() {
         return teamID;
     }

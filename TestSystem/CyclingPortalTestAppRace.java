@@ -422,14 +422,14 @@ public class CyclingPortalTestAppRace {
             e.printStackTrace();
         }
 
-        // Save and load portal
         try {
             portal.saveCyclingPortal("portal.ser");
             System.out.println("Portal saved successfully.");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
+        // Load saved portal
         try {
             portal.loadCyclingPortal("portal.ser");
             System.out.println("Portal loaded successfully.");
@@ -438,5 +438,80 @@ public class CyclingPortalTestAppRace {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        // Gather data to see if loading correctly
+        System.out.println("Races from loaded portal: ");
+        try {
+            int[] races = portal.getRaceIds();
+            if (races != null) {
+                System.out.println("Race Ids: " + Arrays.toString(races));
+            } else {
+                System.out.println("Failed to get RaceIds.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Stages from loaded portal: ");
+        try {
+            int[] stages = portal.getRaceStages(0);
+            if (stages != null) {
+                System.out.println("Stage Ids: " + Arrays.toString(stages));
+            } else {
+                System.out.println("Failed to get StageIds.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Checkpoints from loaded portal: ");
+        try {
+            int[] checkpoints = portal.getStageCheckpoints(0);
+            if (checkpoints != null) {
+                System.out.println("Checkpoint Ids: " + Arrays.toString(checkpoints));
+            } else {
+                System.out.println("Failed to get CheckpointIds.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Riders from loaded portal: ");
+        try {
+            int[] riders = portal.getTeamRiders(1);
+            if (riders != null) {
+                System.out.println("Rider Ids: " + Arrays.toString(riders));
+            } else {
+                System.out.println("Failed to get RiderIds.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            int[] points = portal.getRidersMountainPointsInStage(1);
+            if (points != null) {
+                System.out.println("Mountain points: " + Arrays.toString(points));
+            } else {
+                System.out.println("Failed to get mountain points.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            int newTeam = portal.createTeam("LoadedPortalTeam", "Just checking the counter");
+            if (newTeam == -1) {
+                System.out.println("Team created successfully. Team ID: " + newTeam);
+            } else {
+                System.out.println("Failed to create team.");
+            }
+        } catch (IllegalNameException e) {
+            e.printStackTrace();
+        } catch (InvalidNameException e) {
+            e.printStackTrace();
+        }
+
+        
     }
 }

@@ -20,6 +20,9 @@ public class Rider implements Serializable{
         this.stageResults = new ArrayList<stageResults>();
         
     }
+    public static void setCounter(int counter) {
+        idCounter = counter;
+    }
     public int getRiderId() {
         return id;
     }

@@ -27,6 +27,9 @@ public class Race implements Serializable{
         this.mountainClassification = new ArrayList<Rider>();
         
     }
+    public static void setCounter(int counter) {
+        raceIdCounter = counter;
+    }
     public String viewRaceDetails(){
         return "Race Name: " + this.raceName + 
                "\nRace Description: " + this.raceDescription + 
