@@ -11,12 +11,7 @@ import java.util.ArrayList;
 
 
 /**
- * BadCyclingPortal is a minimally compiling, but non-functioning implementor
- * of the CyclingPortal interface.
- * 
- * @author Diogo Pacheco
- * @version 2.0
- *
+ * Implementation of the CyclingPortal interface.
  */
 public class CyclingPortalImpl implements CyclingPortal {
 	public ArrayList<Race> races = new ArrayList<Race>();
@@ -26,6 +21,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int[] getRaceIds() {
+		// Returns the IDs of races
 		int[] raceIds = new int[races.size()];
 		for(int i = 0; i < races.size(); i++) {
 			raceIds[i] = races.get(i).getRaceId();
@@ -62,9 +58,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 		else{
 			return -1;
 		}
-		
 	}
-	
 
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {

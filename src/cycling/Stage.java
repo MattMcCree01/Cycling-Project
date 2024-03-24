@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.Map;
 
-
+/**
+ * Represents a stage in a race.
+ */
 public class Stage implements Serializable{
     private static int stageIdCounter = 0;
     private int stageId;
@@ -27,6 +29,15 @@ public class Stage implements Serializable{
     private Checkpoint[] checkpoints; 
     private ArrayList<Rider> participatingRiders;
 
+    /**
+     * Constructor for creating a stage.
+     * @param raceID The ID of the race the stage belongs to.
+     * @param stageName The name of the stage.
+     * @param stageDescription The description of the stage.
+     * @param stageLength The length of the stage.
+     * @param startTime The start time of the stage.
+     * @param stageType The type of the stage.
+     */
     public Stage(int raceID, String stageName, String stageDescription, double stageLength, LocalTime startTime, StageType stageType) {
         this.stageId = stageIdCounter++;
         this.raceID = raceID;
@@ -59,19 +70,23 @@ public class Stage implements Serializable{
     }
     
     public static void removeStage(int stageID) {
-
+        // TODO: Implement this method
     }
 
     public int addClimbToStage(int stageId, double location, CheckpointType type, double averageGradient, double length) throws InvalidStageStateException{
+        // Check if stage is in a valid state for this operation
         if (this.status.equals("waiting for results")) {
             throw new InvalidStageStateException("Stage is in an invalid state for this operation");
         }
         
+        // Create new checkpoint
         Checkpoint newCheckpoint = new Checkpoint(stageId, location, type, averageGradient, length);
         Checkpoint[] newCheckpoints = new Checkpoint[checkpoints.length + 1];
+        // Copy checkpoints to new array
         for (int i = 0; i < checkpoints.length; i++) {
             newCheckpoints[i] = checkpoints[i];
         }
+        // Add new checkpoint to new array
         newCheckpoints[checkpoints.length] = newCheckpoint;
         checkpoints = newCheckpoints;
         return newCheckpoint.getCheckpointID();
@@ -86,12 +101,15 @@ public class Stage implements Serializable{
     }
 
     public int addSprintToStage(int stageId, double location) throws InvalidStageStateException{
+        // Check if stage is in a valid state for this operation
         if (this.status.equals("waiting for results")) {
             throw new InvalidStageStateException("Stage is in an invalid state for this operation");
         }
 
+        // Create new checkpoint
         Checkpoint newCheckpoint = new Checkpoint(stageId, location);
         Checkpoint[] newCheckpoints = new Checkpoint[checkpoints.length + 1];
+        // Copy checkpoints to new array
         for (int i = 0; i < checkpoints.length; i++) {
             newCheckpoints[i] = checkpoints[i];
         }
@@ -101,20 +119,23 @@ public class Stage implements Serializable{
     }
 
     public void removeCheckpointFromStage(int checkpointId) throws InvalidStageStateException {
+        // Check if stage is in a valid state for this operation
         if (this.status.equals("waiting for results")) {
             throw new InvalidStageStateException("Stage is in an invalid state for this operation");
         }
 
         int indexToRemove = -1;
+        // Find the index of the checkpoint to remove
         for (int i = 0; i < checkpoints.length; i++) {
             if (checkpoints[i].getCheckpointID() == checkpointId) {
                 indexToRemove = i;
                 break;
             }
         }
-
+        
+        // Remove the checkpoint
         if (indexToRemove != -1) {
-            checkpoints[indexToRemove] = null; // Set the reference to null
+            checkpoints[indexToRemove] = null;
             Checkpoint[] newCheckpoints = new Checkpoint[checkpoints.length - 1];
             for (int i = 0, j = 0; i < checkpoints.length; i++) {
                 if (i != indexToRemove) {
@@ -176,7 +197,6 @@ public class Stage implements Serializable{
         return participatingRiders.toArray(new Rider[participatingRiders.size()]);
     }
 
-    // Trialing new update mountain points
     public void updateStageMountainMountainpoints() {
         int checkpointCount = 0;
 
@@ -227,8 +247,6 @@ public class Stage implements Serializable{
         }
     }
 
-    // New update stage points
-    // TODO - adding points to wrong riders??
     public void updateStagePoints() {
         int checkpointCount = 0;
 
@@ -257,6 +275,7 @@ public class Stage implements Serializable{
 
         sortedMap.putAll(riderFinishTimes);
         Dictionary<Integer, Integer> pointsMap = new Hashtable<>();
+        // Assign points based on position in the sorted list for the stage type
         switch(this.stageType) {
             case TT:
             case HIGH_MOUNTAIN:
@@ -313,7 +332,7 @@ public class Stage implements Serializable{
             default:
                 break;
         }
-
+            // Iterate over sortedMap to assign points to riders
             for (Map.Entry<Integer, LocalTime> entry : sortedMap.entrySet()) {
                 int riderId = entry.getKey();
                 int position = sortedMap.headMap(riderId).size();
@@ -374,7 +393,5 @@ public class Stage implements Serializable{
             }
             checkpointCount++;
         }
-        
-
     }
 }

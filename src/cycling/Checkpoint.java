@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+/**
+ * Represents a checkpoint in a cycling stage.
+ */
 public class Checkpoint implements Serializable{
     private static final int Null = 0;
     private static int checkpointIDcounter = 0;
@@ -15,10 +18,17 @@ public class Checkpoint implements Serializable{
     private CheckpointType type;
     private Double averageGradient;
     private Double length;
-    private ArrayList<Rider> RiderPointsRankInCheckpoint;//will help adjust points more easily
+    private ArrayList<Rider> RiderPointsRankInCheckpoint;
     private Dictionary<Integer, Integer> PointsPerPosition;
 
-
+    /**
+     * Constructor for creating a checkpoint.
+     * @param stageId The ID of the stage.
+     * @param location The location of the checkpoint.
+     * @param type The type of checkpoint.
+     * @param averageGradient The average gradient at the checkpoint.
+     * @param length The length of the checkpoint.
+     */
     public Checkpoint(int stageId, Double location, CheckpointType type, Double averageGradient, Double length){
         this.checkpointID = checkpointIDcounter++;
         this.stageID = stageId;
@@ -28,6 +38,8 @@ public class Checkpoint implements Serializable{
         this.length = length;
         this.RiderPointsRankInCheckpoint = new ArrayList<Rider>();
         this.PointsPerPosition = new Hashtable<>();
+
+        // Assigning points based on checkpoint type
         switch (this.type) {
             case C4:
                 this.PointsPerPosition.put(0,1);
@@ -59,15 +71,17 @@ public class Checkpoint implements Serializable{
                 this.PointsPerPosition.put(5,6);
                 this.PointsPerPosition.put(6,4);
                 this.PointsPerPosition.put(7,2);
-
-
-
                 break;
             default:
                 break;
         }
-
     }
+
+    /**
+     * Constructor for creating a sprint checkpoint.
+     * @param stageId The ID of the stage.
+     * @param location The location of the checkpoint.
+     */
     public Checkpoint(int stageId, Double location){
         this.checkpointID = checkpointIDcounter++;
         this.stageID = stageId;
@@ -75,6 +89,8 @@ public class Checkpoint implements Serializable{
         this.type = CheckpointType.SPRINT;
         this.RiderPointsRankInCheckpoint = new ArrayList<Rider>();
         this.PointsPerPosition = new Hashtable<>();
+
+        // Assigning points for sprint checkpoints
         this.PointsPerPosition.put(0,20);
         this.PointsPerPosition.put(1,17);
         this.PointsPerPosition.put(2,15);
@@ -95,7 +111,7 @@ public class Checkpoint implements Serializable{
         checkpointIDcounter = counter;
     }
     public int getCheckpointID() {
-            return checkpointID;
+        return checkpointID;
     }
     public CheckpointType getType() {
         return type;
@@ -104,21 +120,26 @@ public class Checkpoint implements Serializable{
         return PointsPerPosition;
     }
     public void addRiderToRank(Rider inpRider, LocalTime inpTime){
+        // Flag to check if rider is added
         Boolean check = false;
-        
+
+        // Iterate through existing riders to find position to insert new rider
         for (Rider rider : RiderPointsRankInCheckpoint){
             if (rider.getRiderCheckpointTime(checkpointID).isAfter(inpTime)){
+                // Insert rider
                 RiderPointsRankInCheckpoint.add(RiderPointsRankInCheckpoint.indexOf(rider), inpRider);
                 check = true;
                 break;
             }
             
         }
+
+        // Add rider if not inserted into position
         if (check ==false ) {
             RiderPointsRankInCheckpoint.add(inpRider);
-        
-            
         }
+        
+        // Update points based on checkpoint type
         if(type != CheckpointType.SPRINT){
             updateMountainPoints();
         }
@@ -153,7 +174,5 @@ public class Checkpoint implements Serializable{
             }
             
         }
-    }
-
-        
+    }  
 }

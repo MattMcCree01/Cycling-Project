@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.io.Serializable;
 import java.time.LocalTime;
 
+/**
+ * Represents a rider participating in races.
+ */
 public class Rider implements Serializable{
     private static int idCounter = 0;
     private int id;
@@ -11,7 +14,12 @@ public class Rider implements Serializable{
     private int teamID;
     private ArrayList<stageResults> stageResults;
     
-
+    /**
+     * Constructor for creating a rider.
+     * @param teamId The ID of the team the rider belongs to.
+     * @param name The name of the rider.
+     * @param yearOfBirth The year of birth of the rider.
+     */
     public Rider (int teamId, String name, int yearOfBirth) {
         this.id = idCounter++;
         this.teamID = teamId;
@@ -33,6 +41,7 @@ public class Rider implements Serializable{
         return stageResults.toArray(new stageResults[stageResults.size()]);
     }
     public LocalTime[] getSpecificStageResults(int stageId) {
+        // Returns the results of a specific stage
         for (stageResults stageResult : stageResults) {
             if (stageResult.getStageId() == stageId) {
                 return stageResult.getResults();
@@ -54,9 +63,6 @@ public class Rider implements Serializable{
             }
         }
     }
-    public void removeRider(int riderId) {
-        
-    }
     public void registerRiderResultsInStage(int stageId, LocalTime... checkpoints) {
         stageResults.add(new stageResults(stageId, checkpoints));
         
@@ -65,7 +71,6 @@ public class Rider implements Serializable{
         for (stageResults stageResults : stageResults) {
             if(stageResults.getStageId() == stageId) {
                 return stageResults.getResults();
-                
             }
         }
         return null;
@@ -75,13 +80,12 @@ public class Rider implements Serializable{
         return null;
     }
     public void deleteRiderResultsInStage(int stageId) {
-        
+        // TODO: Implement this method
     }
     public int getRacePoints(){
         int points = 0;
         for (stageResults stageResults : stageResults) {
             points += stageResults.getStagePoints();
-
         }
         return points;
     }
@@ -102,6 +106,7 @@ public class Rider implements Serializable{
     }
     public LocalTime getElapsedTime() {
         LocalTime elapsedTime = LocalTime.of(0, 0, 0);
+        // Loop through the stage results and add the time to the total elapsed time
         for (stageResults stageResults : stageResults) {
             elapsedTime = elapsedTime.plusHours(stageResults.getStageTime().getHour());
             elapsedTime = elapsedTime.plusMinutes(stageResults.getStageTime().getMinute());
@@ -111,6 +116,7 @@ public class Rider implements Serializable{
     }
     public LocalTime getStageElapsedTime(int stageId) {
         LocalTime elapsedTime = LocalTime.of(0, 0, 0);
+        // Loop through the stage results and add the time to the total elapsed time
         for (stageResults stageResults : stageResults) {
             if (stageResults.getStageId() == stageId) {
                 elapsedTime = elapsedTime.plusHours(stageResults.getStageTime().getHour());
@@ -156,6 +162,4 @@ public class Rider implements Serializable{
     public void setTeamId(int teamId) {
         this.teamID = teamId;
     }
-
-
 }

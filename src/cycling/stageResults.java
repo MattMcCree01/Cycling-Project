@@ -2,7 +2,9 @@ package cycling;
 import java.io.Serializable;
 import java.time.LocalTime;
 
-
+/**
+ * Represents a riders results of a stage in a cycling race.
+ */
 public class stageResults implements Serializable{
     private int stageId;
     private LocalTime[] results;
@@ -11,7 +13,11 @@ public class stageResults implements Serializable{
     private LocalTime elapsedTime;
     private LocalTime adjustedElapsedTime;
 
-
+    /**
+     * Constructor for creating stage results.
+     * @param stageId The ID of the stage.
+     * @param results The results of the stage.
+     */
     public stageResults(int stageId, LocalTime... results) {
         this.stageId = stageId;
         this.results = results;
