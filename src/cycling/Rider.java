@@ -40,6 +40,13 @@ public class Rider implements Serializable{
     public stageResults[] getStageResults() {
         return stageResults.toArray(new stageResults[stageResults.size()]);
     }
+    public void removeStageResults(int stageId) {
+        for (int i = 0; i < stageResults.size(); i++) {
+            if (stageResults.get(i).getStageId() == stageId) {
+                stageResults.remove(i);
+            }
+        }
+    }
     public LocalTime[] getSpecificStageResults(int stageId) {
         // Returns the results of a specific stage
         for (stageResults stageResult : stageResults) {

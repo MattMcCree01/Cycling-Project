@@ -113,4 +113,7 @@ public class Race implements Serializable{
         }
         this.totalLength = length;
     }
+    public void removeStage(Stage stage) {
+        stages.remove(stage);
+    }
 }

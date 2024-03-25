@@ -69,8 +69,8 @@ public class Stage implements Serializable{
         return stageType;
     }
     
-    public static void removeStage(int stageID) {
-        // TODO: Implement this method
+    public void deleteAllCheckpoints () {
+        checkpoints = new Checkpoint[0];
     }
 
     public int addClimbToStage(int stageId, double location, CheckpointType type, double averageGradient, double length) throws InvalidStageStateException{
@@ -195,6 +195,14 @@ public class Stage implements Serializable{
     }
     public Rider[] getParticipatingRiders() {
         return participatingRiders.toArray(new Rider[participatingRiders.size()]);
+    }
+    public void removeParticipatingRider(int riderId) {
+        for (int i = 0; i < participatingRiders.size(); i++) {
+            if (participatingRiders.get(i).getRiderId() == riderId) {
+                participatingRiders.remove(i);
+                break;
+            }
+        }
     }
 
     public void updateStageMountainMountainpoints() {
