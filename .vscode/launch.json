@@ -17,6 +17,13 @@
             "name": "CyclingPortalTestAppRace",
             "request": "launch",
             "mainClass": "CyclingPortalTestAppRace",
+            "projectName": "Cycling-Project_5bbcb83b"
+        },
+        {
+            "type": "java",
+            "name": "CyclingPortalTestAppRace",
+            "request": "launch",
+            "mainClass": "CyclingPortalTestAppRace",
             "projectName": "Cycling-Project_14ab5efd",
             "vmArgs": "-enableassertions"
         },

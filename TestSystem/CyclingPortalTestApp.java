@@ -345,6 +345,20 @@ public class CyclingPortalTestApp {
 		} catch (IDNotRecognisedException e) {
 			e.printStackTrace();
 		}
+		//Test getRidersPointsInRace
+		System.out.println("-------------------Testing the getRidersPointsInRace");
+		try {
+			int raceId = 0;
+			int riderId = 0;
+			int[] points = portal1.getRidersPointsInRace(raceId);
+			if (points.length > 0) {
+				System.out.println("Points: " + points);
+			} else {
+				System.out.println("Failed to get points");
+			}
+		} catch (IDNotRecognisedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	

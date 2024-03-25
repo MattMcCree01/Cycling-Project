@@ -89,17 +89,29 @@ public class Rider implements Serializable{
     public void deleteRiderResultsInStage(int stageId) {
         // TODO: Implement this method
     }
-    public int getRacePoints(){
+    public int getRacePoints(Race currentRace) {
         int points = 0;
-        for (stageResults stageResults : stageResults) {
-            points += stageResults.getStagePoints();
+        Stage[] stages = currentRace.loadStages();
+        for (Stage stage : stages) {
+            int stageId = stage.getStageId();
+            for (stageResults stageResults : stageResults) {
+                if (stageResults.getStageId() == stageId) {
+                    points += stageResults.getStagePoints();
+                }
+            }
         }
         return points;
     }
-    public int getMountainPoints(){
+    public int getRaceMountainPoints(Race currentRace) {
         int points = 0;
-        for (stageResults stageResults : stageResults) {
-            points += stageResults.getStageMountainPoints();
+        Stage[] stages = currentRace.loadStages();
+        for (Stage stage : stages) {
+            int stageId = stage.getStageId();
+            for (stageResults stageResults : stageResults) {
+                if (stageResults.getStageId() == stageId) {
+                    points += stageResults.getStageMountainPoints();
+                }
+            }
         }
         return points;
     }
@@ -169,4 +181,21 @@ public class Rider implements Serializable{
     public void setTeamId(int teamId) {
         this.teamID = teamId;
     }
+    public LocalTime getRiderRaceElapsedTime(Race currentRace) {
+        LocalTime elapsedTime = LocalTime.of(0, 0, 0);
+        Stage[] stages = currentRace.loadStages();
+        for (Stage stage : stages) {
+            int stageId = stage.getStageId();
+            for (stageResults stageResults : stageResults) {
+                if (stageResults.getStageId() == stageId) {
+                    elapsedTime = elapsedTime.plusHours(stageResults.getStageTime().getHour());
+                    elapsedTime = elapsedTime.plusMinutes(stageResults.getStageTime().getMinute());
+                    elapsedTime = elapsedTime.plusSeconds(stageResults.getStageTime().getSecond());
+                }
+            }
+        }
+        return elapsedTime;
+    }
+
+
 }

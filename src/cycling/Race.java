@@ -3,6 +3,8 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Represents a race consisting of multiple stages.
@@ -116,4 +118,39 @@ public class Race implements Serializable{
     public void removeStage(Stage stage) {
         stages.remove(stage);
     }
+    public Rider[] getGeneralClassification(){
+        return GeneralClassification.toArray(new Rider[GeneralClassification.size()]);
+    }
+
+    public void addRiderToClassification(Rider rider){
+        if(GeneralClassification.contains(rider)){
+        }
+        else{
+            GeneralClassification.add(rider);
+        }
+        
+        Collections.sort(GeneralClassification, new Comparator<Rider>() {
+            @Override
+            public int compare(Rider r1, Rider r2) {
+                return r1.getRiderRaceElapsedTime(Race.this).compareTo(r2.getRiderRaceElapsedTime(Race.this));
+            }
+        });
+    }
+    public void addRiderToPointsClassification(Rider rider){
+        if(pointsClassification.contains(rider)){
+        }
+        else{
+            pointsClassification.add(rider);
+        }
+        
+        Collections.sort(pointsClassification, new Comparator<Rider>() {
+            @Override
+            public int compare(Rider r1, Rider r2) {
+                return r1.getRacePoints(null) - r2.getRacePoints(null);
+            }
+        });
+    }
+
+    
 }
+    

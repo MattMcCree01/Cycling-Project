@@ -494,13 +494,14 @@ public class CyclingPortalImpl implements CyclingPortal {
 		boolean stageIdCheck = false;
 		Rider currentRider = null;
 		Stage currentStage = null;
-		// check if the stage
+		Race currentRace = null;
 		for (Race race : races) {
 			Stage[] stages = race.loadStages();
 			for (Stage stage : stages) {
 				if (stage.getStageId() == stageId) {
 					stageIdCheck = true;
 					currentStage = stage;
+					currentRace = race;
 					break;
 				}
 			}	
@@ -546,6 +547,9 @@ public class CyclingPortalImpl implements CyclingPortal {
 		// Register riders results and add to participating riders
 		currentRider.registerRiderResultsInStage(stageId, checkpoints);
 		currentStage.addParticipatingRider(currentRider);
+		currentRace.addRiderToClassification(currentRider);
+		currentRace.addRiderToPointsClassification(currentRider);
+		//currentRace.addRiderToMountainPointsClassification(currentRider);
 
 	}
 	@Override
@@ -584,8 +588,18 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		Stage currentStage = getStageById(stageId);
+		if(currentStage == null) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		Rider currentRider = getRiderById(riderId);
+		if(currentRider == null) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+
+		return currentStage.adjustedElapsedTime(riderId);
+
+		
 	}
 
 	@Override
@@ -648,8 +662,17 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Stage currentStage = getStageById(stageId);
+		if(currentStage == null) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		Rider[] riders = currentStage.getParticipatingRiders();
+		ArrayList<LocalTime> adjustedTimes = new ArrayList<LocalTime>();
+		for (Rider rider : riders) {
+			adjustedTimes.add(currentStage.adjustedElapsedTime(rider.getRiderId()));
+		}
+		return adjustedTimes.toArray(new LocalTime[adjustedTimes.size()]);
 	}
 
 	@Override
@@ -824,37 +847,107 @@ public class CyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public LocalTime[] getGeneralClassificationTimesInRace(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		Race currentRace = getRaceById(raceId);
+		if(currentRace == null) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		Rider[] riders = currentRace.getGeneralClassification();
+		ArrayList<LocalTime> times = new ArrayList<LocalTime>();
+		for (Rider rider : riders) {
+			times.add(rider.getRiderRaceElapsedTime(currentRace));
+		}
+		return times.toArray(new LocalTime[times.size()]);
 	}
 
 	@Override
 	public int[] getRidersPointsInRace(int raceId) throws IDNotRecognisedException {
+		ArrayList<Rider> orderedRiders = new ArrayList<Rider>();
 		Race currentRace = getRaceById(raceId);
+		if(currentRace == null) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
 		Stage[] stages = currentRace.loadStages();
 		for (Stage stage : stages) {
 			Rider[] riders = stage.getParticipatingRiders();
 			for (Rider rider : riders) {
-				
-				int points = rider.getRacePoints(raceId);
-				points
-				
+				if(orderedRiders.isEmpty()) {
+					orderedRiders.add(rider);
+				}
+				else {
+					Boolean added = false;
+					for (Rider rider2 : orderedRiders) {
+						if(rider2.getRiderId() == (rider.getRiderId())){
+							added = true;
+							break;
+						}
+						else if(rider2.getRiderRaceElapsedTime(currentRace).isAfter(rider.getRiderRaceElapsedTime(currentRace))) {
+							orderedRiders.add(orderedRiders.indexOf(rider2), rider);
+							added = true;
+							break;
+						}
+
+					}
+					if(!added) {
+						orderedRiders.add(rider);
+					}
+				}
 			}
 		}
 
-		return null;
+		return orderedRiders.stream().mapToInt(i -> i.getRacePoints(currentRace)).toArray();
 	}
 
 	@Override
 	public int[] getRidersMountainPointsInRace(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Rider> orderedRiders = new ArrayList<Rider>();
+		Race currentRace = getRaceById(raceId);
+		if(currentRace == null) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		Stage[] stages = currentRace.loadStages();
+		for (Stage stage : stages) {
+			Rider[] riders = stage.getParticipatingRiders();
+			for (Rider rider : riders) {
+				if(orderedRiders.isEmpty()) {
+					orderedRiders.add(rider);
+				}
+				else {
+					Boolean added = false;
+					for (Rider rider2 : orderedRiders) {
+						if(rider2.getRiderId() == (rider.getRiderId())){
+							added = true;
+							break;
+						}
+						else if(rider2.getRiderRaceElapsedTime(currentRace).isAfter(rider.getRiderRaceElapsedTime(currentRace))) {
+							orderedRiders.add(orderedRiders.indexOf(rider2), rider);
+							added = true;
+							break;
+						}
+
+					}
+					if(!added) {
+						orderedRiders.add(rider);
+					}
+				}
+			}
+		}
+
+		return orderedRiders.stream().mapToInt(i -> i.getRaceMountainPoints(currentRace)).toArray();
 	}
+	
 
 	@Override
 	public int[] getRidersGeneralClassificationRank(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		Race currentRace = getRaceById(raceId);
+		if(currentRace == null) {
+			throw new IDNotRecognisedException("ID not recognised");
+		}
+		Rider[] riders = currentRace.getGeneralClassification();
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		for (Rider rider : riders) {
+			ids.add(rider.getRiderId());
+		}
+		return ids.stream().mapToInt(i -> i).toArray();
 	}
 
 	@Override
@@ -887,6 +980,16 @@ public class CyclingPortalImpl implements CyclingPortal {
 			if(race.getRaceId() == raceId) {
 				currentRace = race;
 				return currentRace;
+			}
+		}
+		return null;
+	}
+	public Rider getRiderById(int riderId){
+		Rider currentRider = null;
+		for (Rider rider : riders) {
+			if(rider.getRiderId() == riderId) {
+				currentRider = rider;
+				return currentRider;
 			}
 		}
 		return null;

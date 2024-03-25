@@ -182,7 +182,7 @@ public class Stage implements Serializable{
     public int[] getRiderMountainPoints() {
         int[] outArray = new int[participatingRiders.size()];
         for (int i = 0; i < participatingRiders.size(); i++) {
-            outArray[i] = participatingRiders.get(i).getMountainPoints();        
+            outArray[i] = participatingRiders.get(i).getStageMountainPoints(stageId);        
         }
         return outArray;
     }
@@ -401,5 +401,31 @@ public class Stage implements Serializable{
             }
             checkpointCount++;
         }
+    }
+    public LocalTime adjustedElapsedTime(int riderId){
+        LocalTime[] newtimes = new LocalTime[participatingRiders.size()]; 
+        for(int i = participatingRiders.size(); i > 0; i--){
+            if(participatingRiders.get(i).getStageElapsedTime(i).minusSeconds(1).isBefore(participatingRiders.get(i-1).getStageElapsedTime(i-1))){
+                newtimes[i] = participatingRiders.get(i).getStageElapsedTime(i-1);
+                while(true){
+                    i+=1;
+                    if(participatingRiders.get(i).getStageElapsedTime(i).equals(newtimes[i-1])){
+                        newtimes[i] = newtimes[i-1]; 
+                    }
+                    else{
+                        break;
+                    }
+                }
+            }
+            else{
+                newtimes[i] = participatingRiders.get(i).getStageElapsedTime(i);
+            }
+        }
+        for (Rider rider : participatingRiders) {
+            if(rider.getRiderId() == riderId){
+                return newtimes[participatingRiders.indexOf(rider)];
+            }
+        }
+        return null;
     }
 }
