@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.io.IOException;
+import java.lang.reflect.Array;
 
 import cycling.*;
 
@@ -410,7 +411,7 @@ public class CyclingPortalTestAppRace {
         }
 
         // Get riders rank in stage
-        System.out.println("Rank for stage 1:");
+        System.out.println("Rank for stage 3:");
         try {
             int [] RiderRank = portal.getRidersRankInStage(2);
             if (RiderRank != null) {
@@ -422,76 +423,25 @@ public class CyclingPortalTestAppRace {
             e.printStackTrace();
         }
 
+        // Get riders classification
+        System.out.println("General classification:");
         try {
-            portal.saveCyclingPortal("portal.ser");
-            System.out.println("Portal saved successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        // Load saved portal
-        try {
-            portal.loadCyclingPortal("portal.ser");
-            System.out.println("Portal loaded successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        // Gather data to see if loading correctly
-        System.out.println("Races from loaded portal: ");
-        try {
-            int[] races = portal.getRaceIds();
-            if (races != null) {
-                System.out.println("Race Ids: " + Arrays.toString(races));
+            int [] RiderClassification = portal.getRidersGeneralClassificationRank(0);
+            if (RiderClassification != null) {
+                System.out.println("Results: " + Arrays.toString(RiderClassification));
             } else {
-                System.out.println("Failed to get RaceIds.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Stages from loaded portal: ");
-        try {
-            int[] stages = portal.getRaceStages(0);
-            if (stages != null) {
-                System.out.println("Stage Ids: " + Arrays.toString(stages));
-            } else {
-                System.out.println("Failed to get StageIds.");
+                System.out.println("Failed to get classification.");
             }
         } catch (IDNotRecognisedException e) {
             e.printStackTrace();
         }
 
-        System.out.println("Checkpoints from loaded portal: ");
+        // Get riders mountain points in race
+        System.out.println("Mountain points in race:");
         try {
-            int[] checkpoints = portal.getStageCheckpoints(0);
-            if (checkpoints != null) {
-                System.out.println("Checkpoint Ids: " + Arrays.toString(checkpoints));
-            } else {
-                System.out.println("Failed to get CheckpointIds.");
-            }
-        } catch (IDNotRecognisedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Riders from loaded portal: ");
-        try {
-            int[] riders = portal.getTeamRiders(1);
-            if (riders != null) {
-                System.out.println("Rider Ids: " + Arrays.toString(riders));
-            } else {
-                System.out.println("Failed to get RiderIds.");
-            }
-        } catch (IDNotRecognisedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            int[] points = portal.getRidersMountainPointsInStage(1);
-            if (points != null) {
-                System.out.println("Mountain points: " + Arrays.toString(points));
+            int[] RiderMountainPoints = portal.getRidersMountainPointsInRace(0);
+            if (RiderMountainPoints != null) {
+                System.out.println("Results: " + Arrays.toString(RiderMountainPoints));
             } else {
                 System.out.println("Failed to get mountain points.");
             }
@@ -499,19 +449,30 @@ public class CyclingPortalTestAppRace {
             e.printStackTrace();
         }
 
+        // Get riders points in race
+        System.out.println("Points in race:");
         try {
-            int newTeam = portal.createTeam("LoadedPortalTeam", "Just checking the counter");
-            if (newTeam == -1) {
-                System.out.println("Team created successfully. Team ID: " + newTeam);
+            int[] RiderPoints = portal.getRidersPointsInRace(0);
+            if (RiderPoints != null) {
+                System.out.println("Results: " + Arrays.toString(RiderPoints));
             } else {
-                System.out.println("Failed to create team.");
+                System.out.println("Failed to get mountain points.");
             }
-        } catch (IllegalNameException e) {
-            e.printStackTrace();
-        } catch (InvalidNameException e) {
+        } catch (IDNotRecognisedException e) {
             e.printStackTrace();
         }
 
-        
+        // Get general classification times
+        System.out.println("General classification times:");
+        try {
+            LocalTime[] RiderTimes = portal.getGeneralClassificationTimesInRace(0);
+            if (RiderTimes != null) {
+                System.out.println("Results: " + Arrays.toString(RiderTimes));
+            } else {
+                System.out.println("Failed to get general classification times.");
+            }
+        } catch (IDNotRecognisedException e) {
+            e.printStackTrace();
+        }
     }
 }

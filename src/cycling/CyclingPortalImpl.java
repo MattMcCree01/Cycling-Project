@@ -548,8 +548,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 		currentRider.registerRiderResultsInStage(stageId, checkpoints);
 		currentStage.addParticipatingRider(currentRider);
 		currentRace.addRiderToClassification(currentRider);
-		currentRace.addRiderToPointsClassification(currentRider);
-		//currentRace.addRiderToMountainPointsClassification(currentRider);
+		currentRace.addRiderToPointsClassification(currentRider, currentRace);
 
 	}
 	@Override
@@ -623,7 +622,6 @@ public class CyclingPortalImpl implements CyclingPortal {
 						break;
 					}
 				}
-				throw new IDNotRecognisedException("Rider not in stage");
 			}
 		} else {
 			throw new IDNotRecognisedException("ID not recognised");

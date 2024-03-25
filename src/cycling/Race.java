@@ -136,7 +136,7 @@ public class Race implements Serializable{
             }
         });
     }
-    public void addRiderToPointsClassification(Rider rider){
+    public void addRiderToPointsClassification(Rider rider, Race race){
         if(pointsClassification.contains(rider)){
         }
         else{
@@ -146,7 +146,7 @@ public class Race implements Serializable{
         Collections.sort(pointsClassification, new Comparator<Rider>() {
             @Override
             public int compare(Rider r1, Rider r2) {
-                return r1.getRacePoints(null) - r2.getRacePoints(null);
+                return r1.getRacePoints(race) - r2.getRacePoints(race);
             }
         });
     }

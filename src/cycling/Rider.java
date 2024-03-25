@@ -86,9 +86,6 @@ public class Rider implements Serializable{
     public LocalTime[] getRiderAdjustedElapsedTimeInStage(int stageID) {
         return null;
     }
-    public void deleteRiderResultsInStage(int stageId) {
-        // TODO: Implement this method
-    }
     public int getRacePoints(Race currentRace) {
         int points = 0;
         Stage[] stages = currentRace.loadStages();
