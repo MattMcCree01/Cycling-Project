@@ -1,10 +1,8 @@
 package cycling;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -68,9 +66,18 @@ public class Stage implements Serializable{
     public StageType getStageType() {
         return stageType;
     }
+    public LocalTime getStartTime(){
+        return startTime;
+    }
     
     public void deleteAllCheckpoints () {
         checkpoints = new Checkpoint[0];
+    }
+    public int getStageRaceId(){
+        return raceID;
+    }
+    public String getDescription(){
+        return stageDescription;
     }
 
     public int addClimbToStage(int stageId, double location, CheckpointType type, double averageGradient, double length) throws InvalidStageStateException{

@@ -549,6 +549,8 @@ public class CyclingPortalImpl implements CyclingPortal {
 		currentStage.addParticipatingRider(currentRider);
 		currentRace.addRiderToClassification(currentRider);
 		currentRace.addRiderToPointsClassification(currentRider, currentRace);
+		currentRace.addRiderToMountainPointsClassification(currentRider, currentRace);
+		
 
 	}
 	@Override
@@ -901,6 +903,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 		ArrayList<Rider> orderedRiders = new ArrayList<Rider>();
 		Race currentRace = getRaceById(raceId);
 		if(currentRace == null) {
+		
 			throw new IDNotRecognisedException("ID not recognised");
 		}
 		Stage[] stages = currentRace.loadStages();
@@ -947,19 +950,39 @@ public class CyclingPortalImpl implements CyclingPortal {
 		for (Rider rider : riders) {
 			ids.add(rider.getRiderId());
 		}
-		return ids.stream().mapToInt(i -> i).toArray();
+		if(ids.size()== 0){
+			return new int[0];
+		}
+		else{
+			return ids.stream().mapToInt(i -> i).toArray();
+		}
 	}
 
 	@Override
 	public int[] getRidersPointClassificationRank(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		Race currentRace = getRaceById(raceId);
+		if(currentRace==null){
+			throw new IDNotRecognisedException("Id not recognised");
+		}
+		if(currentRace.getPointsClassification().length == 0){
+			return new int[0];
+		}
+		return currentRace.getPointsClassification();
+
 	}
 
 	@Override
 	public int[] getRidersMountainPointClassificationRank(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		Race currentRace = getRaceById(raceId);
+		if (currentRace == null) {
+			throw new IDNotRecognisedException("Id not recognised");	
+		}
+		if(currentRace.getMountainPointsClassification().length == 0){
+			return new int[0];
+		}
+		else{
+			return currentRace.getMountainPointsClassification();
+		}
 	}
 	public Stage getStageById(int stageId){
 		Stage currentStage = null;
@@ -983,6 +1006,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 		}
 		return null;
 	}
+
 	public Rider getRiderById(int riderId){
 		Rider currentRider = null;
 		for (Rider rider : riders) {

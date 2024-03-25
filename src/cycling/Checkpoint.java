@@ -10,7 +10,6 @@ import java.util.Hashtable;
  * Represents a checkpoint in a cycling stage.
  */
 public class Checkpoint implements Serializable{
-    private static final int Null = 0;
     private static int checkpointIDcounter = 0;
     private int checkpointID;
     private int stageID;
@@ -175,4 +174,14 @@ public class Checkpoint implements Serializable{
             
         }
     }  
+    public double getLocation(){
+        return location;
+    }
+    public double getAverageGradient(){
+        return averageGradient;
+    }
+    public double getLength(){
+        return length;
+    }
+    
 }

@@ -19,7 +19,7 @@ public class Race implements Serializable{
     private ArrayList<Rider> GeneralClassification;
     private ArrayList<Rider> pointsClassification;
     private ArrayList<Rider> mountainClassification;
-    private static ArrayList<Race> races = new ArrayList<Race>();
+    
 
     /**
      * Constructor for creating a race.
@@ -117,6 +117,7 @@ public class Race implements Serializable{
     }
     public void removeStage(Stage stage) {
         stages.remove(stage);
+        this.updateRaceLength();
     }
     public Rider[] getGeneralClassification(){
         return GeneralClassification.toArray(new Rider[GeneralClassification.size()]);
@@ -150,7 +151,40 @@ public class Race implements Serializable{
             }
         });
     }
+    public void addRiderToMountainPointsClassification(Rider rider, Race race){
+        if(mountainClassification.contains(rider)){
+
+        }
+        else{
+            pointsClassification.add(rider);
+        }
+        Collections.sort(mountainClassification, new Comparator<Rider>() {
+            @Override
+            public int compare(Rider r1,Rider r2){
+                return r1.getRaceMountainPoints(race) - r2.getRaceMountainPoints(race);
+            }            
+        });
+    }
+    public int[] getPointsClassification(){
+        int[] riderIds = new int[pointsClassification.size()];
+        int i=0;
+        for (Rider rider : pointsClassification) {
+            
+            riderIds[i++] = rider.getRiderId();
+            
+        }
+        return riderIds;
+    }
+    public int[] getMountainPointsClassification(){
+        int[] riderIds = new int[mountainClassification.size()];
+        int i = 0;
+        for(Rider rider: mountainClassification){
+            riderIds[i++] = rider.getRiderId();
+        }
+        return riderIds;
+    }
 
     
 }
     
+
