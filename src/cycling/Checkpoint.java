@@ -106,18 +106,39 @@ public class Checkpoint implements Serializable{
         this.PointsPerPosition.put(13,2);
         this.PointsPerPosition.put(14,1);
     }
+    /**
+     * sets the counter if needed after a load
+     * @param counter
+     */
     public static void setCounter(int counter) {
         checkpointIDcounter = counter;
     }
+    /**
+     * returns the id of the checkpoint
+     * @return an int of id
+     */
     public int getCheckpointID() {
         return checkpointID;
     }
+    /**
+     * returns the type of the checkpoint
+     * @return an enum based on CheckpointType
+     */
     public CheckpointType getType() {
         return type;
     }
+    /**
+     * gets the points for a specific position
+     * @return a dictionary of position and points
+     */
     public Dictionary<Integer, Integer> getPointsPerPosition() {
         return PointsPerPosition;
     }
+    /**
+     * adds the rider to the rank of the stage
+     * @param inpRider
+     * @param inpTime
+     */
     public void addRiderToRank(Rider inpRider, LocalTime inpTime){
         // Flag to check if rider is added
         Boolean check = false;
@@ -146,6 +167,9 @@ public class Checkpoint implements Serializable{
             updateSprintPoints();
         }        
     }
+    /**
+     * updates the mountain points once a rider is added
+     */
     public void updateMountainPoints(){
         for (Rider rider : RiderPointsRankInCheckpoint) {
             try{
@@ -160,6 +184,9 @@ public class Checkpoint implements Serializable{
             
         }
     }
+    /**
+     * updates the sprint points once a rider is added
+     */
     public void updateSprintPoints(){
         for (Rider rider : RiderPointsRankInCheckpoint) {
             try{
@@ -174,14 +201,26 @@ public class Checkpoint implements Serializable{
             
         }
     }  
+    /**
+     * gets the location of the checkpoint
+     * @return a double that is the location of the checkpoint
+     */
     public double getLocation(){
         return location;
     }
+    /**
+     * gets the average gradient of the chekpoint
+     * @return a double that is the average gradient
+     */
     public double getAverageGradient(){
         return averageGradient;
     }
+    /**
+     * gets the length of the checkpoint
+     * @return a double which is the length
+     */
     public double getLength(){
-        return length;
+        return length; 
     }
     
 }
