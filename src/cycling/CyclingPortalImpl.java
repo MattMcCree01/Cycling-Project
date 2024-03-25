@@ -868,6 +868,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 		}
 		Stage[] stages = currentRace.loadStages();
 		for (Stage stage : stages) {
+			stage.updateStagePoints();
 			Rider[] riders = stage.getParticipatingRiders();
 			for (Rider rider : riders) {
 				if(orderedRiders.isEmpty()) {
@@ -906,6 +907,7 @@ public class CyclingPortalImpl implements CyclingPortal {
 		}
 		Stage[] stages = currentRace.loadStages();
 		for (Stage stage : stages) {
+			stage.updateStageMountainMountainpoints();
 			Rider[] riders = stage.getParticipatingRiders();
 			for (Rider rider : riders) {
 				if(orderedRiders.isEmpty()) {
@@ -967,7 +969,6 @@ public class CyclingPortalImpl implements CyclingPortal {
 			if(race.loadStage(stageId) != null) {
 				currentStage = race.loadStage(stageId);
 				return currentStage;
-				
 			}
 
 		}
