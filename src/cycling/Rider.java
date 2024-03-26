@@ -28,18 +28,52 @@ public class Rider implements Serializable{
         this.stageResults = new ArrayList<stageResults>();
         
     }
+    /**
+     * sets the counter after a load
+     * @param counter
+     */
     public static void setCounter(int counter) {
         idCounter = counter;
     }
+    /**
+     * returns the rider Id
+     * @return an int of id
+     */
     public int getRiderId() {
         return id;
     }
+    /**
+     * returns the teamId of the rider
+     * @return an int of id
+     */
     public int getTeamId() {
         return teamID;
     }
+    /**
+     * rturns the name of the rider
+     * @return a string containing name
+     */
+    public String getName(){
+        return name;
+    }
+    /**
+     * returns the birth year of the rider
+     * @return an int of the year
+     */
+    public int getBirthYear(){
+        return BirthYear;
+    }
+    /**
+     * returns the stage results for the rider 
+     * @return an array of stageResults
+     */
     public stageResults[] getStageResults() {
         return stageResults.toArray(new stageResults[stageResults.size()]);
     }
+    /**
+     * removes the stage results for a specific stage from the rider
+     * @param stageId
+     */
     public void removeStageResults(int stageId) {
         for (int i = 0; i < stageResults.size(); i++) {
             if (stageResults.get(i).getStageId() == stageId) {
@@ -47,6 +81,11 @@ public class Rider implements Serializable{
             }
         }
     }
+    /**
+     * returns the list of times within a specific stage
+     * @param stageId
+     * @return a list of times
+     */
     public LocalTime[] getSpecificStageResults(int stageId) {
         // Returns the results of a specific stage
         for (stageResults stageResult : stageResults) {
@@ -56,6 +95,11 @@ public class Rider implements Serializable{
         }
         return null;
     }
+    /**
+     * sets the mountain points for a stage
+     * @param stageId
+     * @param points
+     */
     public void setRiderMountainPoints(int stageId, int points) {
         for (stageResults stageResult : stageResults) {
             if (stageResult.getStageId() == stageId) {
@@ -63,6 +107,11 @@ public class Rider implements Serializable{
             }
         }
     }
+    /**
+     * sets the sprint points for a specific stage
+     * @param stageId
+     * @param points
+     */
     public void setRiderSprintStagePoints(int stageId, int points) {
         for (stageResults stageResult : stageResults) {
             if (stageResult.getStageId() == stageId) {
@@ -70,10 +119,20 @@ public class Rider implements Serializable{
             }
         }
     }
+    /**
+     * registers the riders results in the stage
+     * @param stageId
+     * @param checkpoints
+     */
     public void registerRiderResultsInStage(int stageId, LocalTime... checkpoints) {
         stageResults.add(new stageResults(stageId, checkpoints));
         
     }
+    /**
+     * gets the results for a certain stage
+     * @param stageId
+     * @return an array of times
+     */
     public LocalTime[] getRiderResultsInStage(int stageId) {
         for (stageResults stageResults : stageResults) {
             if(stageResults.getStageId() == stageId) {
@@ -83,9 +142,19 @@ public class Rider implements Serializable{
         return null;
 
     }
+    /**
+     * returns the elapsed time of a rider in a certain stage
+     * @param stageID
+     * @return
+     */
     public LocalTime[] getRiderAdjustedElapsedTimeInStage(int stageID) {
         return null;
     }
+    /**
+     * gets the race points of the rider
+     * @param currentRace
+     * @return an integer of the points
+     */
     public int getRacePoints(Race currentRace) {
         int points = 0;
         Stage[] stages = currentRace.loadStages();
@@ -99,6 +168,11 @@ public class Rider implements Serializable{
         }
         return points;
     }
+    /**
+     * gets the mountain points for a specific race
+     * @param currentRace
+     * @return an int of the mountain points
+     */
     public int getRaceMountainPoints(Race currentRace) {
         int points = 0;
         Stage[] stages = currentRace.loadStages();
@@ -112,6 +186,11 @@ public class Rider implements Serializable{
         }
         return points;
     }
+    /**
+     * gets the mountain points of a specific stage
+     * @param stageId
+     * @return an integer of the mountain points for the stage
+     */
     public int getStageMountainPoints(int stageId) {
         for (stageResults stageResults : stageResults) {
             if (stageResults.getStageId() == stageId) {
@@ -120,6 +199,10 @@ public class Rider implements Serializable{
         }
         return 0;
     }
+    /**
+     * gets the elpased time for a rider
+     * @return a time of the elapsed time
+     */
     public LocalTime getElapsedTime() {
         LocalTime elapsedTime = LocalTime.of(0, 0, 0);
         // Loop through the stage results and add the time to the total elapsed time
@@ -130,6 +213,11 @@ public class Rider implements Serializable{
         }
         return elapsedTime;
     }
+    /**
+     * gets the elapsed time for a stage
+     * @param stageId
+     * @return a time of elapsed time
+     */
     public LocalTime getStageElapsedTime(int stageId) {
         LocalTime elapsedTime = LocalTime.of(0, 0, 0);
         // Loop through the stage results and add the time to the total elapsed time
@@ -142,6 +230,11 @@ public class Rider implements Serializable{
         }
         return elapsedTime;
     }
+    /**
+     * returns the stage points for the rider
+     * @param stageId
+     * @return an integer of the points
+     */
     public int getRiderStagePoints(int stageId) {
         for (stageResults stageResults : stageResults) {
             if (stageResults.getStageId() == stageId) {
@@ -150,6 +243,11 @@ public class Rider implements Serializable{
         }
         return 0;
     }
+    /**
+     * gets the elapsed time in a checkpoint
+     * @param checkpointId
+     * @return returns a time of the elapsed time
+     */
     public LocalTime getRiderCheckpointTime(int checkpointId) {
         for (stageResults stageResults : stageResults) {
             for (LocalTime time : stageResults.getResults()) {
@@ -160,6 +258,11 @@ public class Rider implements Serializable{
         }
         return null;
     }
+    /**
+     * adds mountain points to the stage
+     * @param stageId
+     * @param points
+     */
     public void addStageMountainPoints(int stageId, int points) {
         for (stageResults stageResults : stageResults) {
             if (stageResults.getStageId() == stageId) {
@@ -167,6 +270,11 @@ public class Rider implements Serializable{
             }
         }        
     }
+    /**
+     * adds sprint points for the stage
+     * @param stageId
+     * @param points
+     */
     public void addStageSprintPoints(int stageId, int points) {
         for (stageResults stageResults : stageResults) {
             if (stageResults.getStageId() == stageId) {
@@ -175,9 +283,18 @@ public class Rider implements Serializable{
             }
         }        
     }
+    /**
+     * sets the teamId for the rider
+     * @param teamId
+     */
     public void setTeamId(int teamId) {
         this.teamID = teamId;
     }
+    /**
+     * gets the elapsed time for the race
+     * @param currentRace
+     * @return a time of the elapsed time
+     */
     public LocalTime getRiderRaceElapsedTime(Race currentRace) {
         LocalTime elapsedTime = LocalTime.of(0, 0, 0);
         Stage[] stages = currentRace.loadStages();

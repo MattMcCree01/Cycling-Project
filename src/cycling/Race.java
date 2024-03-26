@@ -37,22 +37,40 @@ public class Race implements Serializable{
         this.mountainClassification = new ArrayList<Rider>();
         
     }
+    /**
+     * Sets the counter for race IDs.
+     * @param counter The new counter value.
+     */
     public static void setCounter(int counter) {
         raceIdCounter = counter;
     }
+    /**
+     * Returns a string representation of the race details.
+     * @return A string containing the race details.
+     */
     public String viewRaceDetails(){
         return "Race Name: " + this.raceName + 
                "\nRace Description: " + this.raceDescription + 
                "\nNumber of Stages: " + this.getNumberOfStages() + 
                "\nTotal Length: " + this.totalLength;
     }
-    
+    /**
+     * Returns the number of stages in the race.
+     * @return The number of stages.
+     */
     public int getNumberOfStages(){
         return stages.size();
     }
 
     /**
      * Adds a stage to the race.
+     * @param RaceId The ID of the race.
+     * @param stageName The name of the stage.
+     * @param description The description of the stage.
+     * @param length The length of the stage.
+     * @param startTime The start time of the stage.
+     * @param type The type of the stage.
+     * @return The ID of the new stage.
      */
     public int addStageToRace(int RaceId, String stageName, String description, double length, LocalTime startTime, StageType type){
         // Create new stage
@@ -68,7 +86,10 @@ public class Race implements Serializable{
         stages = new ArrayList<>(Arrays.asList(newStages));
         return newStage.getStageId();
     }
-
+    /**
+     * Returns an array of the IDs of all stages in the race.
+     * @return An array of stage IDs.
+     */
     public int[] getStageIds() {
         // Create an array to store the stage IDs
         int[] stageIds = new int[stages.size()];
@@ -78,7 +99,11 @@ public class Race implements Serializable{
         }
         return stageIds;
     }
-
+    /**
+     * Returns the stage with the given ID.
+     * @param StageId The ID of the stage to load.
+     * @return The stage with the given ID, or null if no such stage exists.
+     */
     public Stage loadStage(int StageId){
         // Loop through the stages and return the stage with the matching ID
         for(int i=0; i< stages.size();i++){
@@ -88,6 +113,10 @@ public class Race implements Serializable{
         }
         return null;
     }
+    /**
+     * Returns an array of all stages in the race.
+     * @return An array of stages.
+     */
     public Stage[] loadStages(){
         // Create an array to store the stages
         int[] stageIds = getStageIds();
@@ -98,15 +127,30 @@ public class Race implements Serializable{
         }
         return stages;
     }
+    /**
+     * Returns the ID of the race.
+     * @return The race ID.
+     */
     public int getRaceId(){
         return this.raceId;
     }
+    /**
+     * Returns the name of the race.
+     * @return The race name.
+     */
     public String getRaceName(){
         return this.raceName;
     }
+    /**
+     * Adds a stage to the race.
+     * @param stage The stage to add.
+     */
     public void addStage(Stage stage){
         stages.add(stage);
     }
+    /**
+     * Updates the total length of the race based on the lengths of the stages.
+     */
     public void updateRaceLength(){
         double length = 0;
         // Loop through the stages and add the length of each stage to the total length
@@ -115,14 +159,25 @@ public class Race implements Serializable{
         }
         this.totalLength = length;
     }
+    /**
+     * Removes a stage from the race.
+     * @param stage The stage to remove.
+     */
     public void removeStage(Stage stage) {
         stages.remove(stage);
         this.updateRaceLength();
     }
+    /**
+     * Returns an array of riders in the general classification.
+     * @return An array of riders.
+     */
     public Rider[] getGeneralClassification(){
         return GeneralClassification.toArray(new Rider[GeneralClassification.size()]);
     }
-
+    /**
+     * Adds a rider to the general classification.
+     * @param rider The rider to add.
+     */
     public void addRiderToClassification(Rider rider){
         if(GeneralClassification.contains(rider)){
         }
@@ -137,6 +192,11 @@ public class Race implements Serializable{
             }
         });
     }
+    /**
+     * Adds a rider to the points classification.
+     * @param rider The rider to add.
+     * @param race The race for which to add the rider.
+     */
     public void addRiderToPointsClassification(Rider rider, Race race){
         if(pointsClassification.contains(rider)){
         }
@@ -151,6 +211,11 @@ public class Race implements Serializable{
             }
         });
     }
+    /**
+     * Adds a rider to the mountain points classification.
+     * @param rider The rider to add.
+     * @param race The race for which to add the rider.
+     */
     public void addRiderToMountainPointsClassification(Rider rider, Race race){
         if(mountainClassification.contains(rider)){
 
@@ -165,6 +230,10 @@ public class Race implements Serializable{
             }            
         });
     }
+    /**
+     * Returns an array of the IDs of all riders in the points classification.
+     * @return An array of rider IDs.
+     */
     public int[] getPointsClassification(){
         int[] riderIds = new int[pointsClassification.size()];
         int i=0;
@@ -175,6 +244,10 @@ public class Race implements Serializable{
         }
         return riderIds;
     }
+    /**
+     * Returns an array of the IDs of all riders in the mountain points classification.
+     * @return An array of rider IDs.
+     */
     public int[] getMountainPointsClassification(){
         int[] riderIds = new int[mountainClassification.size()];
         int i = 0;

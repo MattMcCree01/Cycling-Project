@@ -48,38 +48,85 @@ public class Stage implements Serializable{
         this.checkpoints = new Checkpoint[0];
         this.participatingRiders = new ArrayList<Rider>();
     }
+    /**
+     * updates the counter
+     * @param counter
+     */
     public static void setCounter(int counter) {
         stageIdCounter = counter;
     }
+    /**
+     * gets the stage id
+     * @return returns an integer containing the stage Id
+     */
     public int getStageId() {
         return stageId;
     }
+    /**
+     * returns the name of the stage
+     * @return a string of the name of the stage
+     */
     public String getStageName() {
         return stageName;
     }
+    /**
+     * returns the length of the stage
+     * @return a double of the length of the stage
+     */
     public double getStageLength() {
         return stageLength;
     }
+    /**
+     * returns an array of checkpoints
+     * @return an array of checkpoints
+     */
     public Checkpoint[] getCheckpoints() {
         return checkpoints;
     }
+    /**
+     * returns the type of stage
+     * @return an enum of the stage type
+     */
     public StageType getStageType() {
         return stageType;
     }
+    /**
+     * returns the start time of the stage
+     * @return the start time as type LocalTime
+     */
     public LocalTime getStartTime(){
         return startTime;
     }
-    
+    /**
+     * removes all the checkpoints from the stage
+     */
     public void deleteAllCheckpoints () {
         checkpoints = new Checkpoint[0];
     }
+    /**
+     * returns the RaceId linked to the stage
+     * @return an int of the RaceId
+     */
     public int getStageRaceId(){
         return raceID;
     }
+    /**
+     * returns the description of the stage
+     * @return a stirng containing the description
+     */
     public String getDescription(){
         return stageDescription;
     }
-
+    /**
+     * adds a checkpoin tof type climb to the stage
+     * @param stageId
+     * @param location
+     * @param type
+     * @param averageGradient
+     * @param length
+     * @return the id of the checkpoint
+     * @throws InvalidStageStateException
+     */
     public int addClimbToStage(int stageId, double location, CheckpointType type, double averageGradient, double length) throws InvalidStageStateException{
         // Check if stage is in a valid state for this operation
         if (this.status.equals("waiting for results")) {
@@ -98,6 +145,11 @@ public class Stage implements Serializable{
         checkpoints = newCheckpoints;
         return newCheckpoint.getCheckpointID();
     }
+    /**
+     * gets a specfiic checkpoint based on the Id
+     * @param checkpointId
+     * @return an object of Checkpoint
+     */
     public Checkpoint getCheckpoint(int checkpointId) {
         for (int i = 0; i < checkpoints.length; i++) {
             if (checkpoints[i].getCheckpointID() == checkpointId) {
@@ -106,7 +158,13 @@ public class Stage implements Serializable{
         }
         return null;
     }
-
+    /**
+     * adds a checkpoint of type sprint to the stage
+     * @param stageId
+     * @param location
+     * @return the id of the new checkpoint
+     * @throws InvalidStageStateException
+     */
     public int addSprintToStage(int stageId, double location) throws InvalidStageStateException{
         // Check if stage is in a valid state for this operation
         if (this.status.equals("waiting for results")) {
@@ -124,7 +182,11 @@ public class Stage implements Serializable{
         checkpoints = newCheckpoints;
         return newCheckpoint.getCheckpointID();
     }
-
+    /**
+     * removes the chekpoint from the stage
+     * @param checkpointId
+     * @throws InvalidStageStateException
+     */
     public void removeCheckpointFromStage(int checkpointId) throws InvalidStageStateException {
         // Check if stage is in a valid state for this operation
         if (this.status.equals("waiting for results")) {
@@ -152,7 +214,11 @@ public class Stage implements Serializable{
             checkpoints = newCheckpoints;
         }
     }
-
+    /**
+     * returns the checkpoint ids of the checkpoints in the stage
+     * @param stageId
+     * @return an array of integers
+     */
     public int[] getStageCheckpoints(int stageId) {
         int[] outArray = new int[checkpoints.length];
         for (int i = 0; i < checkpoints.length; i++) {
@@ -161,7 +227,11 @@ public class Stage implements Serializable{
         }
         return outArray;
     }
-
+    /**
+     * sets the status to waiting for results
+     * @param stageId
+     * @throws InvalidStageStateException
+     */
     public void concludeStagePreparation(int stageId) throws InvalidStageStateException{
         if (this.status == "waiting for results") {
             throw new InvalidStageStateException("Stage is in an invalid state for this operation");
@@ -169,9 +239,17 @@ public class Stage implements Serializable{
             this.status = "waiting for results";
         }
     }
+    /**
+     * returns the status of the stage
+     * @return a string which contains the status
+     */
     public String getStageStatus() {
         return status;
     }
+    /**
+     * adds the rider to the participating riders array
+     * @param rider
+     */
     public void addParticipatingRider(Rider rider) {
         participatingRiders.add(rider);
         Comparator<Rider> comparator = Comparator.comparing(r -> r.getRiderResultsInStage(stageId)[r.getRiderResultsInStage(stageId).length-1]);
@@ -179,6 +257,10 @@ public class Stage implements Serializable{
         
 
     }
+    /**
+     * returns an array containing the riders points
+     * @return an integer array that contains all the riders points
+     */
     public int[] getRiderPoints() {
         int[] outArray = new int[participatingRiders.size()];
         for (int i = 0; i < participatingRiders.size(); i++) {
@@ -186,6 +268,10 @@ public class Stage implements Serializable{
         }
         return outArray;
     }
+    /**
+     * returns an array containing the riders mountain points
+     * @return an integer array that contains all the riders mountain points
+     */
     public int[] getRiderMountainPoints() {
         int[] outArray = new int[participatingRiders.size()];
         for (int i = 0; i < participatingRiders.size(); i++) {
@@ -193,6 +279,10 @@ public class Stage implements Serializable{
         }
         return outArray;
     }
+    /**
+     * returns an array containing the riders mountain points
+     * @return an integer array that contains all the riders mountain points
+     */
     public int[] getRiderStageMountainPoints() {
         int[] outArray = new int[participatingRiders.size()];
         for (int i = 0; i < participatingRiders.size(); i++) {
@@ -200,9 +290,17 @@ public class Stage implements Serializable{
         }
         return outArray;
     }
+    /**
+     * returns an array of the participating riderds
+     * @return an array of the participating riders
+     */
     public Rider[] getParticipatingRiders() {
         return participatingRiders.toArray(new Rider[participatingRiders.size()]);
     }
+    /**
+     * removes the rider from the stage
+     * @param riderId
+     */
     public void removeParticipatingRider(int riderId) {
         for (int i = 0; i < participatingRiders.size(); i++) {
             if (participatingRiders.get(i).getRiderId() == riderId) {
@@ -211,7 +309,9 @@ public class Stage implements Serializable{
             }
         }
     }
-
+    /**
+     * updates the mountain points
+     */
     public void updateStageMountainMountainpoints() {
         int checkpointCount = 0;
 
@@ -261,7 +361,9 @@ public class Stage implements Serializable{
             checkpointCount++;
         }
     }
-
+    /**
+     * updates the stage points in the stage
+     */
     public void updateStagePoints() {
         int checkpointCount = 0;
 
@@ -409,6 +511,11 @@ public class Stage implements Serializable{
             checkpointCount++;
         }
     }
+    /**
+     * returns the adjusted elapsed time for the specfic rider
+     * @param riderId
+     * @return a LocalTime of the elapsed time
+     */
     public LocalTime adjustedElapsedTime(int riderId){
         LocalTime[] newtimes = new LocalTime[participatingRiders.size()]; 
         for(int i = participatingRiders.size(); i > 0; i--){

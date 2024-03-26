@@ -1,6 +1,6 @@
 package cycling;
 import java.io.Serializable;
-import java.util.ArrayList;
+
 
 /**
  * Represents a cycling team.
@@ -21,6 +21,10 @@ public class Team implements Serializable{
         this.teamName = teamName;
         this.description = description;
     }
+    /**
+     * sets the counter after a load
+     * @param counter
+     */
     public static void setCounter(int counter) {
         if (counter == 0) {
             nextID = 1;
@@ -28,9 +32,24 @@ public class Team implements Serializable{
             nextID = counter + 1;
         }
     }
+    /**
+     * gets the teamId
+     * @return an integer of the id
+     */
     public int getTeamId() {
         return teamID;
     }
+    /**
+     * gets the team description
+     * @return a string of the description
+     */
+    public String getDescription(){
+        return description;
+    }
+    /**
+     * gets the name of the team
+     * @return a string of the name
+     */
     public String getTeamName() {
         return teamName;
     }    
